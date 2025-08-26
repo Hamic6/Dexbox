@@ -1,20 +1,16 @@
-import { AppBar, Toolbar, Typography, Box, useMediaQuery, useTheme, IconButton } from '@mui/material';
-import { Brightness4, Brightness7 } from '@mui/icons-material';
-import { useContext } from 'react';
+import { AppBar, Toolbar, Typography, Box, useMediaQuery, useTheme } from '@mui/material';
 import DexboxLogo from '../assets/Dexbox.png';
-import { ColorModeContext } from '../ColorModeContext';
 
 export default function Navbar() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const colorMode = useContext(ColorModeContext);
 
   return (
     <AppBar
       position="fixed"
       elevation={0}
       sx={{
-        bgcolor: 'background.paper',
+        bgcolor: theme.palette.background.paper,
         boxShadow: 'none',
         borderBottom: '1px solid #eee',
         left: 0,
@@ -26,19 +22,19 @@ export default function Navbar() {
     >
       <Toolbar
         sx={{
-          minHeight: { xs: 48, md: 64 },
+          minHeight: isMobile ? 44 : 64, // hauteur réduite sur mobile
           display: 'flex',
           alignItems: 'center',
-          px: { xs: 1, md: 6 },
           justifyContent: isMobile ? 'center' : 'flex-start', // centré sur mobile
+          px: isMobile ? 1 : 6, // padding horizontal réduit sur mobile
         }}
       >
         <Box
           sx={{
             display: 'flex',
             alignItems: 'center',
-            width: { xs: 36, md: 48 },
-            height: { xs: 36, md: 48 },
+            width: isMobile ? 32 : 48, // logo plus petit sur mobile
+            height: isMobile ? 32 : 48,
             mr: isMobile ? 0 : 2,
           }}
         >
@@ -56,25 +52,18 @@ export default function Navbar() {
             fontStyle: 'italic',
             fontFamily: '"ADLaM Display", Montserrat, Arial, sans-serif',
             letterSpacing: 2,
-            color: 'primary.main',
+            color: theme.palette.mode === 'dark' ? '#fff' : '#111',
             textTransform: 'uppercase',
             textShadow: '0 2px 8px rgba(0,0,0,0.12), 0 1px 1px rgba(0,0,0,0.08)',
             opacity: 0.95,
-            background: 'linear-gradient(90deg, #ff9800 0%, #1976d2 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            display: { xs: 'none', md: 'inline-block' },
+            fontSize: isMobile ? '1rem' : '1.25rem', // texte plus petit sur mobile
+            display: { xs: 'inline-block', md: 'inline-block' },
+            ml: isMobile ? 1 : 2,
           }}
         >
-          Dexbox Technologies <sup style={{ fontSize: '0.45em', verticalAlign: 'super', opacity: 0.7 }}>®</sup>
+          Dexbox Technologies
         </Typography>
         <Box sx={{ flexGrow: 1 }} />
-        <IconButton
-          sx={{ ml: 1, color: theme.palette.mode === 'light' ? '#333' : '#fff' }}
-          onClick={colorMode.toggleColorMode}
-        >
-          {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
-        </IconButton>
       </Toolbar>
     </AppBar>
   );

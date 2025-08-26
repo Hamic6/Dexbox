@@ -102,7 +102,7 @@ export default function Login() {
               </Grid>
             )}
 
-            {/* Section connexion responsive */}
+            {/* Section connexion responsive - MODIFICATIONS APPLIQUÉES ICI */}
             <Grid 
               item 
               xs={12} 
@@ -118,8 +118,8 @@ export default function Login() {
                 elevation={isMobile ? 0 : 8}
                 sx={{
                   width: '100%',
-                  maxWidth: 450,
-                  p: { xs: 2, sm: 3 },
+                  maxWidth: { xs: '100%', sm: 400, md: 450 },
+                  p: { xs: 3, sm: 4 },
                   borderRadius: { xs: 0, md: 4 },
                   display: 'flex',
                   flexDirection: 'column',
@@ -135,10 +135,10 @@ export default function Login() {
                   sx={{
                     fontWeight: 600,
                     fontFamily: 'Inter, Roboto, Arial, sans-serif',
-                    fontSize: { xs: '0.8rem', md: '1rem' },
+                    fontSize: { xs: '1.25rem', md: '1.5rem' },
                     textAlign: 'center',
-                    mb: 0.5,
-                    color: theme.palette.text.primary,
+                    mb: 1,
+                    color: theme.palette.mode === 'dark' ? '#fff' : '#111',
                   }}
                 >
                   Connectez-vous à votre compte
@@ -146,24 +146,24 @@ export default function Login() {
                 <Typography
                   variant="body2"
                   sx={{
-                    mb: 1,
+                    mb: 2,
                     fontFamily: 'Inter, Roboto, Arial, sans-serif',
-                    fontSize: { xs: '0.6rem', md: '0.75rem' },
+                    fontSize: { xs: '0.75rem', md: '0.875rem' },
                     textAlign: 'center',
-                    color: theme.palette.text.secondary,
+                    color: theme.palette.mode === 'dark' ? '#fff' : '#111',
                   }}
                 >
                   Vous n'avez pas de compte?{' '}
                   <Box
                     component="span"
                     sx={{
-                      color: theme.palette.text.primary,
-                      fontWeight: 500,
+                      color: theme.palette.mode === 'dark' ? '#fff' : '#111',
+                      fontWeight: 600,
                       cursor: 'pointer',
                       textDecoration: 'underline',
                       ml: 0.5,
-                      fontSize: { xs: '0.6rem', md: '0.75rem' },
-                      '&:hover': { color: theme.palette.text.secondary },
+                      fontSize: { xs: '0.75rem', md: '0.875rem' },
+                      '&:hover': { opacity: 0.7 },
                     }}
                     onClick={() => alert('Redirection vers la page d\'inscription')}
                   >
@@ -193,22 +193,22 @@ export default function Login() {
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
-                          <Email sx={{ color: theme.palette.text.secondary, fontSize: 14 }} />
+                          <Email sx={{ color: theme.palette.mode === 'dark' ? '#fff' : '#111', fontSize: { xs: 18, md: 20 } }} />
                         </InputAdornment>
                       ),
                     }}
                     sx={{
                       fontFamily: 'Inter, Roboto, Arial, sans-serif',
-                      mb: 1,
+                      mb: 2,
                       '& .MuiInputBase-root': {
-                        height: { xs: 20, md: 28 },
-                        fontSize: { xs: '0.6rem', md: '0.75rem' },
+                        height: { xs: 48, md: 56 },
+                        fontSize: { xs: '0.875rem', md: '1rem' },
                         bgcolor: theme.palette.background.paper,
-                        color: theme.palette.text.primary,
+                        color: theme.palette.mode === 'dark' ? '#fff' : '#111',
                       },
                       '& .MuiInputLabel-root': {
-                        fontSize: { xs: '0.6rem', md: '0.75rem' },
-                        color: theme.palette.text.secondary,
+                        fontSize: { xs: '0.875rem', md: '1rem' },
+                        color: theme.palette.mode === 'dark' ? '#fff' : '#111',
                       },
                     }}
                   />
@@ -227,7 +227,7 @@ export default function Login() {
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
-                          <Lock sx={{ color: theme.palette.text.secondary, fontSize: 14 }} />
+                          <Lock sx={{ color: theme.palette.mode === 'dark' ? '#fff' : '#111', fontSize: { xs: 18, md: 20 } }} />
                         </InputAdornment>
                       ),
                       endAdornment: (
@@ -237,25 +237,25 @@ export default function Login() {
                             onClick={handleClickShowPassword}
                             edge="end"
                             size="small"
-                            sx={{ color: theme.palette.text.secondary }}
+                            sx={{ color: theme.palette.mode === 'dark' ? '#fff' : '#111' }}
                           >
-                            {showPassword ? <VisibilityOff sx={{ fontSize: 14 }} /> : <Visibility sx={{ fontSize: 14 }} />}
+                            {showPassword ? <VisibilityOff sx={{ fontSize: { xs: 18, md: 20 } }} /> : <Visibility sx={{ fontSize: { xs: 18, md: 20 } }} />}
                           </IconButton>
                         </InputAdornment>
                       ),
                     }}
                     sx={{
                       fontFamily: 'Inter, Roboto, Arial, sans-serif',
-                      mb: 0.5,
+                      mb: 1,
                       '& .MuiInputBase-root': {
-                        height: { xs: 20, md: 28 },
-                        fontSize: { xs: '0.6rem', md: '0.75rem' },
+                        height: { xs: 48, md: 56 },
+                        fontSize: { xs: '0.875rem', md: '1rem' },
                         bgcolor: theme.palette.background.paper,
-                        color: theme.palette.text.primary,
+                        color: theme.palette.mode === 'dark' ? '#fff' : '#111',
                       },
                       '& .MuiInputLabel-root': {
-                        fontSize: { xs: '0.6rem', md: '0.75rem' },
-                        color: theme.palette.text.secondary,
+                        fontSize: { xs: '0.875rem', md: '1rem' },
+                        color: theme.palette.mode === 'dark' ? '#fff' : '#111',
                       },
                     }}
                   />
@@ -268,9 +268,9 @@ export default function Login() {
                       fontWeight: 500,
                       fontFamily: 'Inter, Roboto, Arial, sans-serif',
                       textDecoration: 'underline',
-                      fontSize: { xs: '0.6rem', md: '0.75rem' },
-                      color: theme.palette.text.secondary,
-                      '&:hover': { color: theme.palette.text.primary },
+                      fontSize: { xs: '0.75rem', md: '0.875rem' },
+                      color: theme.palette.mode === 'dark' ? '#fff' : '#111',
+                      '&:hover': { opacity: 0.7 },
                     }}
                     onClick={() => alert('Redirection vers la page de récupération')}
                   >
@@ -284,7 +284,7 @@ export default function Login() {
                         mt: 2,
                         textAlign: 'center',
                         fontWeight: 500,
-                        fontSize: { xs: '0.6rem', md: '0.75rem' },
+                        fontSize: { xs: '0.75rem', md: '0.875rem' },
                       }}
                     >
                       {error}
@@ -296,14 +296,14 @@ export default function Login() {
                     variant="contained"
                     sx={{
                       mt: 3,
-                      py: 0.3,
+                      py: 1.5,
                       borderRadius: 2,
                       fontWeight: 'bold',
                       fontFamily: 'Inter, Roboto, Arial, sans-serif',
-                      fontSize: { xs: '0.6rem', md: '0.75rem' },
+                      fontSize: { xs: '0.875rem', md: '1rem' },
                       boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
                       textTransform: 'none',
-                      height: { xs: 20, md: 28 },
+                      height: { xs: 48, md: 56 },
                       bgcolor: theme.palette.mode === 'dark' ? '#111' : '#fff',
                       color: theme.palette.mode === 'dark' ? '#fff' : '#111',
                       border: '1px solid',
@@ -316,14 +316,14 @@ export default function Login() {
                     Se connecter
                   </Button>
                 </Box>
-                <Box sx={{ width: '100%', mt: 2 }}>
+                <Box sx={{ width: '100%', mt: 3 }}>
                   <Typography
                     variant="body2"
                     sx={{
                       textAlign: 'center',
-                      mb: 1,
-                      fontSize: { xs: '0.6rem', md: '0.75rem' },
-                      color: theme.palette.text.secondary,
+                      mb: 2,
+                      fontSize: { xs: '0.75rem', md: '0.875rem' },
+                      color: theme.palette.mode === 'dark' ? '#fff' : '#111',
                     }}
                   >
                     Ou connectez-vous avec
@@ -332,27 +332,27 @@ export default function Login() {
                     sx={{
                       display: 'flex',
                       justifyContent: 'center',
-                      gap: 1,
+                      gap: 2,
                       flexDirection: { xs: 'column', sm: 'row' },
                     }}
                   >
                     <Button
                       variant="outlined"
-                      startIcon={<Google sx={{ fontSize: 14, color: theme.palette.text.secondary }} />}
+                      startIcon={<Google sx={{ fontSize: { xs: 18, md: 20 }, color: theme.palette.mode === 'dark' ? '#fff' : '#111' }} />}
                       sx={{
                         textTransform: 'none',
                         borderRadius: 2,
                         fontWeight: 500,
                         fontFamily: 'Inter, Roboto, Arial, sans-serif',
-                        color: theme.palette.text.primary,
-                        borderColor: theme.palette.text.secondary,
-                        height: 20,
-                        px: 1,
-                        fontSize: '0.6rem',
+                        color: theme.palette.mode === 'dark' ? '#fff' : '#111',
+                        borderColor: theme.palette.mode === 'dark' ? '#fff' : '#111',
+                        height: { xs: 40, md: 48 },
+                        px: 2,
+                        fontSize: { xs: '0.75rem', md: '0.875rem' },
                         bgcolor: theme.palette.background.paper,
                         '&:hover': {
                           bgcolor: theme.palette.mode === 'dark' ? '#222' : '#f5f5f5',
-                          borderColor: theme.palette.text.primary,
+                          borderColor: theme.palette.mode === 'dark' ? '#fff' : '#111',
                         },
                       }}
                     >
@@ -360,21 +360,21 @@ export default function Login() {
                     </Button>
                     <Button
                       variant="outlined"
-                      startIcon={<Facebook sx={{ fontSize: 14, color: theme.palette.text.secondary }} />}
+                      startIcon={<Facebook sx={{ fontSize: { xs: 18, md: 20 }, color: theme.palette.mode === 'dark' ? '#fff' : '#111' }} />}
                       sx={{
                         textTransform: 'none',
                         borderRadius: 2,
                         fontWeight: 500,
                         fontFamily: 'Inter, Roboto, Arial, sans-serif',
-                        color: theme.palette.text.primary,
-                        borderColor: theme.palette.text.secondary,
-                        height: 20,
-                        px: 1,
-                        fontSize: '0.6rem',
+                        color: theme.palette.mode === 'dark' ? '#fff' : '#111',
+                        borderColor: theme.palette.mode === 'dark' ? '#fff' : '#111',
+                        height: { xs: 40, md: 48 },
+                        px: 2,
+                        fontSize: { xs: '0.75rem', md: '0.875rem' },
                         bgcolor: theme.palette.background.paper,
                         '&:hover': {
                           bgcolor: theme.palette.mode === 'dark' ? '#222' : '#f5f5f5',
-                          borderColor: theme.palette.text.primary,
+                          borderColor: theme.palette.mode === 'dark' ? '#fff' : '#111',
                         },
                       }}
                     >
