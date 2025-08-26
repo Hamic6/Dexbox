@@ -1,7 +1,10 @@
-import { AppBar, Toolbar, Typography, Box, Card } from '@mui/material';
+import { AppBar, Toolbar, Typography, Box, useMediaQuery, useTheme } from '@mui/material';
 import DexboxLogo from '../assets/Dexbox.png';
 
 export default function Navbar() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
     <AppBar
       position="fixed"
@@ -23,21 +26,16 @@ export default function Navbar() {
           display: 'flex',
           alignItems: 'center',
           px: { xs: 1, md: 6 },
+          justifyContent: isMobile ? 'center' : 'flex-start', // centré sur mobile
         }}
       >
-        <Card
-          elevation={4}
+        <Box
           sx={{
-            p: 0.5,
-            borderRadius: 3,
             display: 'flex',
             alignItems: 'center',
-            bgcolor: 'background.default',
             width: { xs: 36, md: 48 },
             height: { xs: 36, md: 48 },
-            minWidth: 0,
-            minHeight: 0,
-            mr: 2,
+            mr: isMobile ? 0 : 2,
           }}
         >
           <img
@@ -46,7 +44,7 @@ export default function Navbar() {
             title="Dexbox Technologies"
             style={{ width: '100%', height: '100%' }}
           />
-        </Card>
+        </Box>
         <Typography
           variant="h6"
           sx={{
@@ -61,7 +59,7 @@ export default function Navbar() {
             background: 'linear-gradient(90deg, #ff9800 0%, #1976d2 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
-            display: { xs: 'none', md: 'inline-block' }, // cache le texte sur mobile
+            display: { xs: 'none', md: 'inline-block' },
           }}
         >
           Dexbox Technologies <sup style={{ fontSize: '0.45em', verticalAlign: 'super', opacity: 0.7 }}>®</sup>
