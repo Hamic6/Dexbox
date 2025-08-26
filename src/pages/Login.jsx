@@ -118,8 +118,8 @@ export default function Login() {
                 elevation={isMobile ? 0 : 8}
                 sx={{
                   width: '100%',
-                  maxWidth: { xs: '100%', sm: 400, md: 450 },
-                  p: { xs: 3, sm: 4 },
+                  maxWidth: { xs: '100%', sm: 340, md: 380 }, // largeur réduite
+                  p: { xs: 2, sm: 3 }, // padding réduit
                   borderRadius: { xs: 0, md: 4 },
                   display: 'flex',
                   flexDirection: 'column',
@@ -135,9 +135,9 @@ export default function Login() {
                   sx={{
                     fontWeight: 600,
                     fontFamily: 'Inter, Roboto, Arial, sans-serif',
-                    fontSize: { xs: '1.25rem', md: '1.5rem' },
+                    fontSize: { xs: '1.1rem', md: '1.25rem' }, // taille réduite
                     textAlign: 'center',
-                    mb: 1,
+                    mb: 0.7,
                     color: theme.palette.mode === 'dark' ? '#fff' : '#111',
                   }}
                 >
@@ -146,9 +146,9 @@ export default function Login() {
                 <Typography
                   variant="body2"
                   sx={{
-                    mb: 2,
+                    mb: 1.2,
                     fontFamily: 'Inter, Roboto, Arial, sans-serif',
-                    fontSize: { xs: '0.75rem', md: '0.875rem' },
+                    fontSize: { xs: '0.7rem', md: '0.8rem' }, // taille réduite
                     textAlign: 'center',
                     color: theme.palette.mode === 'dark' ? '#fff' : '#111',
                   }}
@@ -162,7 +162,7 @@ export default function Login() {
                       cursor: 'pointer',
                       textDecoration: 'underline',
                       ml: 0.5,
-                      fontSize: { xs: '0.75rem', md: '0.875rem' },
+                      fontSize: { xs: '0.7rem', md: '0.8rem' },
                       '&:hover': { opacity: 0.7 },
                     }}
                     onClick={() => alert('Redirection vers la page d\'inscription')}
@@ -175,7 +175,7 @@ export default function Login() {
                   onSubmit={handleSubmit}
                   sx={{
                     width: '100%',
-                    mt: 1,
+                    mt: 0.7,
                   }}
                 >
                   <TextField
@@ -193,21 +193,21 @@ export default function Login() {
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
-                          <Email sx={{ color: theme.palette.mode === 'dark' ? '#fff' : '#111', fontSize: { xs: 18, md: 20 } }} />
+                          <Email sx={{ color: theme.palette.mode === 'dark' ? '#fff' : '#111', fontSize: { xs: 16, md: 18 } }} />
                         </InputAdornment>
                       ),
                     }}
                     sx={{
                       fontFamily: 'Inter, Roboto, Arial, sans-serif',
-                      mb: 2,
+                      mb: 1.2,
                       '& .MuiInputBase-root': {
-                        height: { xs: 48, md: 56 },
-                        fontSize: { xs: '0.875rem', md: '1rem' },
+                        height: { xs: 38, md: 44 }, // hauteur réduite
+                        fontSize: { xs: '0.7rem', md: '0.8rem' }, // taille réduite
                         bgcolor: theme.palette.background.paper,
                         color: theme.palette.mode === 'dark' ? '#fff' : '#111',
                       },
                       '& .MuiInputLabel-root': {
-                        fontSize: { xs: '0.875rem', md: '1rem' },
+                        fontSize: { xs: '0.7rem', md: '0.8rem' },
                         color: theme.palette.mode === 'dark' ? '#fff' : '#111',
                       },
                     }}
@@ -227,7 +227,7 @@ export default function Login() {
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
-                          <Lock sx={{ color: theme.palette.mode === 'dark' ? '#fff' : '#111', fontSize: { xs: 18, md: 20 } }} />
+                          <Lock sx={{ color: theme.palette.mode === 'dark' ? '#fff' : '#111', fontSize: { xs: 16, md: 18 } }} />
                         </InputAdornment>
                       ),
                       endAdornment: (
@@ -239,22 +239,22 @@ export default function Login() {
                             size="small"
                             sx={{ color: theme.palette.mode === 'dark' ? '#fff' : '#111' }}
                           >
-                            {showPassword ? <VisibilityOff sx={{ fontSize: { xs: 18, md: 20 } }} /> : <Visibility sx={{ fontSize: { xs: 18, md: 20 } }} />}
+                            {showPassword ? <VisibilityOff sx={{ fontSize: { xs: 16, md: 18 } }} /> : <Visibility sx={{ fontSize: { xs: 16, md: 18 } }} />}
                           </IconButton>
                         </InputAdornment>
                       ),
                     }}
                     sx={{
                       fontFamily: 'Inter, Roboto, Arial, sans-serif',
-                      mb: 1,
+                      mb: 0.7,
                       '& .MuiInputBase-root': {
-                        height: { xs: 48, md: 56 },
-                        fontSize: { xs: '0.875rem', md: '1rem' },
+                        height: { xs: 38, md: 44 },
+                        fontSize: { xs: '0.7rem', md: '0.8rem' },
                         bgcolor: theme.palette.background.paper,
                         color: theme.palette.mode === 'dark' ? '#fff' : '#111',
                       },
                       '& .MuiInputLabel-root': {
-                        fontSize: { xs: '0.875rem', md: '1rem' },
+                        fontSize: { xs: '0.7rem', md: '0.8rem' },
                         color: theme.palette.mode === 'dark' ? '#fff' : '#111',
                       },
                     }}
@@ -262,13 +262,13 @@ export default function Login() {
                   <Typography
                     variant="body2"
                     sx={{
-                      mt: 1,
+                      mt: 0.7,
                       textAlign: 'right',
                       cursor: 'pointer',
                       fontWeight: 500,
                       fontFamily: 'Inter, Roboto, Arial, sans-serif',
                       textDecoration: 'underline',
-                      fontSize: { xs: '0.75rem', md: '0.875rem' },
+                      fontSize: { xs: '0.7rem', md: '0.8rem' },
                       color: theme.palette.mode === 'dark' ? '#fff' : '#111',
                       '&:hover': { opacity: 0.7 },
                     }}
@@ -281,10 +281,10 @@ export default function Login() {
                       variant="body2"
                       color="error"
                       sx={{
-                        mt: 2,
+                        mt: 1.2,
                         textAlign: 'center',
                         fontWeight: 500,
-                        fontSize: { xs: '0.75rem', md: '0.875rem' },
+                        fontSize: { xs: '0.7rem', md: '0.8rem' },
                       }}
                     >
                       {error}
@@ -295,15 +295,15 @@ export default function Login() {
                     fullWidth
                     variant="contained"
                     sx={{
-                      mt: 3,
-                      py: 1.5,
+                      mt: 2,
+                      py: 1,
                       borderRadius: 2,
                       fontWeight: 'bold',
                       fontFamily: 'Inter, Roboto, Arial, sans-serif',
-                      fontSize: { xs: '0.875rem', md: '1rem' },
+                      fontSize: { xs: '0.7rem', md: '0.8rem' },
                       boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
                       textTransform: 'none',
-                      height: { xs: 48, md: 56 },
+                      height: { xs: 38, md: 44 },
                       bgcolor: theme.palette.mode === 'dark' ? '#111' : '#fff',
                       color: theme.palette.mode === 'dark' ? '#fff' : '#111',
                       border: '1px solid',
@@ -316,13 +316,13 @@ export default function Login() {
                     Se connecter
                   </Button>
                 </Box>
-                <Box sx={{ width: '100%', mt: 3 }}>
+                <Box sx={{ width: '100%', mt: 2 }}>
                   <Typography
                     variant="body2"
                     sx={{
                       textAlign: 'center',
-                      mb: 2,
-                      fontSize: { xs: '0.75rem', md: '0.875rem' },
+                      mb: 1,
+                      fontSize: { xs: '0.7rem', md: '0.8rem' },
                       color: theme.palette.mode === 'dark' ? '#fff' : '#111',
                     }}
                   >
@@ -332,13 +332,13 @@ export default function Login() {
                     sx={{
                       display: 'flex',
                       justifyContent: 'center',
-                      gap: 2,
+                      gap: 1.2,
                       flexDirection: { xs: 'column', sm: 'row' },
                     }}
                   >
                     <Button
                       variant="outlined"
-                      startIcon={<Google sx={{ fontSize: { xs: 18, md: 20 }, color: theme.palette.mode === 'dark' ? '#fff' : '#111' }} />}
+                      startIcon={<Google sx={{ fontSize: { xs: 16, md: 18 }, color: theme.palette.mode === 'dark' ? '#fff' : '#111' }} />}
                       sx={{
                         textTransform: 'none',
                         borderRadius: 2,
@@ -346,9 +346,9 @@ export default function Login() {
                         fontFamily: 'Inter, Roboto, Arial, sans-serif',
                         color: theme.palette.mode === 'dark' ? '#fff' : '#111',
                         borderColor: theme.palette.mode === 'dark' ? '#fff' : '#111',
-                        height: { xs: 40, md: 48 },
-                        px: 2,
-                        fontSize: { xs: '0.75rem', md: '0.875rem' },
+                        height: { xs: 32, md: 38 },
+                        px: 1.2,
+                        fontSize: { xs: '0.7rem', md: '0.8rem' },
                         bgcolor: theme.palette.background.paper,
                         '&:hover': {
                           bgcolor: theme.palette.mode === 'dark' ? '#222' : '#f5f5f5',
@@ -360,7 +360,7 @@ export default function Login() {
                     </Button>
                     <Button
                       variant="outlined"
-                      startIcon={<Facebook sx={{ fontSize: { xs: 18, md: 20 }, color: theme.palette.mode === 'dark' ? '#fff' : '#111' }} />}
+                      startIcon={<Facebook sx={{ fontSize: { xs: 16, md: 18 }, color: theme.palette.mode === 'dark' ? '#fff' : '#111' }} />}
                       sx={{
                         textTransform: 'none',
                         borderRadius: 2,
@@ -368,9 +368,9 @@ export default function Login() {
                         fontFamily: 'Inter, Roboto, Arial, sans-serif',
                         color: theme.palette.mode === 'dark' ? '#fff' : '#111',
                         borderColor: theme.palette.mode === 'dark' ? '#fff' : '#111',
-                        height: { xs: 40, md: 48 },
-                        px: 2,
-                        fontSize: { xs: '0.75rem', md: '0.875rem' },
+                        height: { xs: 32, md: 38 },
+                        px: 1.2,
+                        fontSize: { xs: '0.7rem', md: '0.8rem' },
                         bgcolor: theme.palette.background.paper,
                         '&:hover': {
                           bgcolor: theme.palette.mode === 'dark' ? '#222' : '#f5f5f5',
