@@ -8,6 +8,8 @@ import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Sidebar from './components/Sidebar';
 import Box from '@mui/material/Box';
+import { useState, useEffect } from 'react';
+import SplashScreen from './components/SplashScreen';
 
 function AppContent() {
   const location = useLocation();
@@ -34,6 +36,18 @@ function AppContent() {
 }
 
 function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simule un chargement (ex: 1.5s)
+    const timer = setTimeout(() => setLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <SplashScreen />;
+  }
+
   return (
     <ColorModeProvider>
       <CssBaseline />
