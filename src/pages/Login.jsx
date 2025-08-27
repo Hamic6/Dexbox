@@ -1,9 +1,10 @@
-import { useTheme, useMediaQuery, Container, Box, Grid, Typography, TextField, Button, InputAdornment, IconButton, Card } from '@mui/material';
-import { Email, Lock, Visibility, VisibilityOff, Google, Facebook } from '@mui/icons-material';
-import Navbar from '../components/Navbar';
+import { useTheme, useMediaQuery, Container, Box, Grid, Typography, TextField, Button, InputAdornment, IconButton, Card, Avatar } from '@mui/material';
+import { Email, Lock, Visibility, VisibilityOff, Google, Facebook, Brightness4, Brightness7 } from '@mui/icons-material';
 import loginIllustration from '../assets/login-illustration.svg';
-import { useState } from 'react';
+import DexboxLogo from '../assets/Dexbox.png';
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ColorModeContext } from '../ColorModeContext';
 
 export default function Login() {
   const theme = useTheme();
@@ -35,358 +36,386 @@ export default function Login() {
   };
 
   return (
-    <>
-      <Navbar />
-      <Container 
-        maxWidth="lg" 
-        disableGutters 
-        sx={{ 
-          pt: { xs: 0, md: 1 },
-          px: { xs: 0, md: 2 }
+    <Container 
+      maxWidth="lg" 
+      disableGutters 
+      sx={{ 
+        pt: { xs: 0, md: 1 },
+        px: { xs: 0, md: 2 }
+      }}
+    >
+      <Box
+        sx={{
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          bgcolor: 'background.default',
+          py: { xs: 2, md: 0 }
         }}
       >
-        <Box
-          sx={{
-            minHeight: '100vh',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            bgcolor: 'background.default',
-            py: { xs: 2, md: 0 }
+        <Grid
+          container
+          spacing={{ xs: 0, md: 6, lg: 12 }}
+          alignItems="center"
+          justifyContent="center"
+          sx={{ 
+            minHeight: { xs: 'auto', md: '100vh' },
+            width: '100%',
+            m: 0
           }}
         >
-          <Grid
-            container
-            spacing={{ xs: 0, md: 6, lg: 12 }}
-            alignItems="center"
-            justifyContent="center"
-            sx={{ 
-              minHeight: { xs: 'auto', md: '100vh' },
-              width: '100%',
-              m: 0
-            }}
-          >
-            {/* Illustration à gauche, masquée sur mobile */}
-            {!isMobile && (
-              <Grid
-                item
-                xs={12}
-                md={6}
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  p: { xs: 2, md: 0 }
-                }}
-              >
-                <Box
-                  sx={{
-                    width: '100%',
-                    maxWidth: 500,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <img
-                    src={loginIllustration}
-                    alt="Illustration"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      objectFit: 'contain',
-                      borderRadius: '16px',
-                    }}
-                  />
-                </Box>
-              </Grid>
-            )}
-
-            {/* Section connexion responsive - MODIFICATIONS APPLIQUÉES ICI */}
-            <Grid 
-              item 
-              xs={12} 
+          {/* Illustration à gauche, masquée sur mobile */}
+          {!isMobile && (
+            <Grid
+              item
+              xs={12}
               md={6}
-              sx={{ 
-                display: 'flex', 
-                justifyContent: { xs: 'center', md: 'flex-start' },
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
                 alignItems: 'center',
                 p: { xs: 2, md: 0 }
               }}
             >
-              <Card
-                elevation={isMobile ? 0 : 8}
+              <Box
                 sx={{
                   width: '100%',
-                  maxWidth: { xs: '100%', sm: 340, md: 380 }, // largeur réduite
-                  p: { xs: 2, sm: 3 }, // padding réduit
-                  borderRadius: { xs: 0, md: 4 },
+                  maxWidth: 500,
                   display: 'flex',
-                  flexDirection: 'column',
                   alignItems: 'center',
-                  bgcolor: theme.palette.background.paper,
-                  boxShadow: { xs: 'none', md: '0 8px 32px rgba(0,0,0,0.08)' },
-                  fontFamily: 'Inter, Roboto, Arial, sans-serif',
+                  justifyContent: 'center',
                 }}
               >
-                <Typography
-                  variant="h6"
-                  gutterBottom
-                  sx={{
-                    fontWeight: 600,
-                    fontFamily: 'Inter, Roboto, Arial, sans-serif',
-                    fontSize: { xs: '1.1rem', md: '1.25rem' }, // taille réduite
-                    textAlign: 'center',
-                    mb: 0.7,
-                    color: theme.palette.mode === 'dark' ? '#fff' : '#111',
+                <img
+                  src={loginIllustration}
+                  alt="Illustration"
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    objectFit: 'contain',
+                    borderRadius: '16px',
                   }}
+                />
+              </Box>
+            </Grid>
+          )}
+
+          {/* Section connexion */}
+          <Grid 
+            item 
+            xs={12} 
+            md={6}
+            sx={{ 
+              display: 'flex', 
+              justifyContent: { xs: 'center', md: 'flex-start' },
+              alignItems: 'center',
+              p: { xs: 2, md: 0 }
+            }}
+          >
+            <Card
+              elevation={isMobile ? 0 : 8}
+              sx={{
+                width: '100%',
+                maxWidth: { xs: '100%', sm: 340, md: 380 },
+                p: { xs: 2, sm: 3 },
+                borderRadius: { xs: 0, md: 4 },
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                bgcolor: theme.palette.background.paper,
+                boxShadow: { xs: 'none', md: '0 8px 32px rgba(0,0,0,0.08)' },
+                fontFamily: 'Inter, Roboto, Arial, sans-serif',
+              }}
+            >
+              <Avatar
+                src={DexboxLogo}
+                alt="Dexbox Logo"
+                sx={{
+                  width: 64,
+                  height: 64,
+                  mb: 1,
+                  bgcolor: 'transparent',
+                }}
+              />
+              <Typography
+                variant="h6"
+                gutterBottom
+                sx={{
+                  fontWeight: 600,
+                  fontFamily: 'Inter, Roboto, Arial, sans-serif',
+                  fontSize: { xs: '1.1rem', md: '1.25rem' },
+                  textAlign: 'center',
+                  mb: 0.7,
+                  color: theme.palette.mode === 'dark' ? '#fff' : '#111',
+                }}
+              >
+                Connectez-vous à votre compte
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{
+                  mb: 1.2,
+                  fontFamily: 'Inter, Roboto, Arial, sans-serif',
+                  fontSize: { xs: '0.7rem', md: '0.8rem' },
+                  textAlign: 'center',
+                  color: theme.palette.mode === 'dark' ? '#fff' : '#111',
+                }}
+              >
+                Vous n'avez pas de compte?{' '}
+                <Box
+                  component="span"
+                  sx={{
+                    color: theme.palette.mode === 'dark' ? '#fff' : '#111',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    textDecoration: 'underline',
+                    ml: 0.5,
+                    fontSize: { xs: '0.7rem', md: '0.8rem' },
+                    '&:hover': { opacity: 0.7 },
+                  }}
+                  onClick={() => alert('Redirection vers la page d\'inscription')}
                 >
-                  Connectez-vous à votre compte
-                </Typography>
+                  Créer un compte
+                </Box>
+              </Typography>
+              <Box
+                component="form"
+                onSubmit={handleSubmit}
+                sx={{
+                  width: '100%',
+                  mt: 0.7,
+                }}
+              >
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Adresse email"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                  value={formData.email}
+                  onChange={handleChange('email')}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Email sx={{ color: theme.palette.mode === 'dark' ? '#fff' : '#111', fontSize: { xs: 16, md: 18 } }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                  sx={{
+                    fontFamily: 'Inter, Roboto, Arial, sans-serif',
+                    mb: 1.2,
+                    '& .MuiInputBase-root': {
+                      height: { xs: 38, md: 44 },
+                      fontSize: { xs: '0.7rem', md: '0.8rem' },
+                      bgcolor: theme.palette.background.paper,
+                      color: theme.palette.mode === 'dark' ? '#fff' : '#111',
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontSize: { xs: '0.7rem', md: '0.8rem' },
+                      color: theme.palette.mode === 'dark' ? '#fff' : '#111',
+                    },
+                  }}
+                />
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Mot de passe"
+                  type={showPassword ? 'text' : 'password'}
+                  id="password"
+                  autoComplete="current-password"
+                  value={formData.password}
+                  onChange={handleChange('password')}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Lock sx={{ color: theme.palette.mode === 'dark' ? '#fff' : '#111', fontSize: { xs: 16, md: 18 } }} />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          edge="end"
+                          size="small"
+                          sx={{ color: theme.palette.mode === 'dark' ? '#fff' : '#111' }}
+                        >
+                          {showPassword ? <VisibilityOff sx={{ fontSize: { xs: 16, md: 18 } }} /> : <Visibility sx={{ fontSize: { xs: 16, md: 18 } }} />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  sx={{
+                    fontFamily: 'Inter, Roboto, Arial, sans-serif',
+                    mb: 0.7,
+                    '& .MuiInputBase-root': {
+                      height: { xs: 38, md: 44 },
+                      fontSize: { xs: '0.7rem', md: '0.8rem' },
+                      bgcolor: theme.palette.background.paper,
+                      color: theme.palette.mode === 'dark' ? '#fff' : '#111',
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontSize: { xs: '0.7rem', md: '0.8rem' },
+                      color: theme.palette.mode === 'dark' ? '#fff' : '#111',
+                    },
+                  }}
+                />
                 <Typography
                   variant="body2"
                   sx={{
-                    mb: 1.2,
+                    mt: 0.7,
+                    textAlign: 'right',
+                    cursor: 'pointer',
+                    fontWeight: 500,
                     fontFamily: 'Inter, Roboto, Arial, sans-serif',
-                    fontSize: { xs: '0.7rem', md: '0.8rem' }, // taille réduite
+                    textDecoration: 'underline',
+                    fontSize: { xs: '0.7rem', md: '0.8rem' },
+                    color: theme.palette.mode === 'dark' ? '#fff' : '#111',
+                    '&:hover': { opacity: 0.7 },
+                  }}
+                  onClick={() => alert('Redirection vers la page de récupération')}
+                >
+                  Mot de passe oublié?
+                </Typography>
+                {error && (
+                  <Typography
+                    variant="body2"
+                    color="error"
+                    sx={{
+                      mt: 1.2,
+                      textAlign: 'center',
+                      fontWeight: 500,
+                      fontSize: { xs: '0.7rem', md: '0.8rem' },
+                    }}
+                  >
+                    {error}
+                  </Typography>
+                )}
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{
+                    mt: 2,
+                    py: 1,
+                    borderRadius: 2,
+                    fontWeight: 'bold',
+                    fontFamily: 'Inter, Roboto, Arial, sans-serif',
+                    fontSize: { xs: '0.7rem', md: '0.8rem' },
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                    textTransform: 'none',
+                    height: { xs: 38, md: 44 },
+                    bgcolor: theme.palette.mode === 'dark' ? '#111' : '#fff',
+                    color: theme.palette.mode === 'dark' ? '#fff' : '#111',
+                    border: '1px solid',
+                    borderColor: theme.palette.mode === 'dark' ? '#fff' : '#111',
+                    '&:hover': {
+                      bgcolor: theme.palette.mode === 'dark' ? '#222' : '#f5f5f5',
+                    },
+                  }}
+                >
+                  Se connecter
+                </Button>
+              </Box>
+              <Box sx={{ width: '100%', mt: 2 }}>
+                <Typography
+                  variant="body2"
+                  sx={{
                     textAlign: 'center',
+                    mb: 1,
+                    fontSize: { xs: '0.7rem', md: '0.8rem' },
                     color: theme.palette.mode === 'dark' ? '#fff' : '#111',
                   }}
                 >
-                  Vous n'avez pas de compte?{' '}
-                  <Box
-                    component="span"
-                    sx={{
-                      color: theme.palette.mode === 'dark' ? '#fff' : '#111',
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                      textDecoration: 'underline',
-                      ml: 0.5,
-                      fontSize: { xs: '0.7rem', md: '0.8rem' },
-                      '&:hover': { opacity: 0.7 },
-                    }}
-                    onClick={() => alert('Redirection vers la page d\'inscription')}
-                  >
-                    Créer un compte
-                  </Box>
+                  Ou connectez-vous avec
                 </Typography>
                 <Box
-                  component="form"
-                  onSubmit={handleSubmit}
                   sx={{
-                    width: '100%',
-                    mt: 0.7,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    gap: 1.2,
+                    flexDirection: { xs: 'column', sm: 'row' },
                   }}
                 >
-                  <TextField
+                  <Button
                     variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="email"
-                    label="Adresse email"
-                    name="email"
-                    autoComplete="email"
-                    autoFocus
-                    value={formData.email}
-                    onChange={handleChange('email')}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <Email sx={{ color: theme.palette.mode === 'dark' ? '#fff' : '#111', fontSize: { xs: 16, md: 18 } }} />
-                        </InputAdornment>
-                      ),
-                    }}
+                    startIcon={<Google sx={{ fontSize: { xs: 16, md: 18 }, color: theme.palette.mode === 'dark' ? '#fff' : '#111' }} />}
                     sx={{
-                      fontFamily: 'Inter, Roboto, Arial, sans-serif',
-                      mb: 1.2,
-                      '& .MuiInputBase-root': {
-                        height: { xs: 38, md: 44 }, // hauteur réduite
-                        fontSize: { xs: '0.7rem', md: '0.8rem' }, // taille réduite
-                        bgcolor: theme.palette.background.paper,
-                        color: theme.palette.mode === 'dark' ? '#fff' : '#111',
-                      },
-                      '& .MuiInputLabel-root': {
-                        fontSize: { xs: '0.7rem', md: '0.8rem' },
-                        color: theme.palette.mode === 'dark' ? '#fff' : '#111',
-                      },
-                    }}
-                  />
-                  <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Mot de passe"
-                    type={showPassword ? 'text' : 'password'}
-                    id="password"
-                    autoComplete="current-password"
-                    value={formData.password}
-                    onChange={handleChange('password')}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <Lock sx={{ color: theme.palette.mode === 'dark' ? '#fff' : '#111', fontSize: { xs: 16, md: 18 } }} />
-                        </InputAdornment>
-                      ),
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            edge="end"
-                            size="small"
-                            sx={{ color: theme.palette.mode === 'dark' ? '#fff' : '#111' }}
-                          >
-                            {showPassword ? <VisibilityOff sx={{ fontSize: { xs: 16, md: 18 } }} /> : <Visibility sx={{ fontSize: { xs: 16, md: 18 } }} />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                    sx={{
-                      fontFamily: 'Inter, Roboto, Arial, sans-serif',
-                      mb: 0.7,
-                      '& .MuiInputBase-root': {
-                        height: { xs: 38, md: 44 },
-                        fontSize: { xs: '0.7rem', md: '0.8rem' },
-                        bgcolor: theme.palette.background.paper,
-                        color: theme.palette.mode === 'dark' ? '#fff' : '#111',
-                      },
-                      '& .MuiInputLabel-root': {
-                        fontSize: { xs: '0.7rem', md: '0.8rem' },
-                        color: theme.palette.mode === 'dark' ? '#fff' : '#111',
-                      },
-                    }}
-                  />
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      mt: 0.7,
-                      textAlign: 'right',
-                      cursor: 'pointer',
+                      textTransform: 'none',
+                      borderRadius: 2,
                       fontWeight: 500,
                       fontFamily: 'Inter, Roboto, Arial, sans-serif',
-                      textDecoration: 'underline',
-                      fontSize: { xs: '0.7rem', md: '0.8rem' },
                       color: theme.palette.mode === 'dark' ? '#fff' : '#111',
-                      '&:hover': { opacity: 0.7 },
-                    }}
-                    onClick={() => alert('Redirection vers la page de récupération')}
-                  >
-                    Mot de passe oublié?
-                  </Typography>
-                  {error && (
-                    <Typography
-                      variant="body2"
-                      color="error"
-                      sx={{
-                        mt: 1.2,
-                        textAlign: 'center',
-                        fontWeight: 500,
-                        fontSize: { xs: '0.7rem', md: '0.8rem' },
-                      }}
-                    >
-                      {error}
-                    </Typography>
-                  )}
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{
-                      mt: 2,
-                      py: 1,
-                      borderRadius: 2,
-                      fontWeight: 'bold',
-                      fontFamily: 'Inter, Roboto, Arial, sans-serif',
-                      fontSize: { xs: '0.7rem', md: '0.8rem' },
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-                      textTransform: 'none',
-                      height: { xs: 38, md: 44 },
-                      bgcolor: theme.palette.mode === 'dark' ? '#111' : '#fff',
-                      color: theme.palette.mode === 'dark' ? '#fff' : '#111',
-                      border: '1px solid',
                       borderColor: theme.palette.mode === 'dark' ? '#fff' : '#111',
+                      height: { xs: 32, md: 38 },
+                      px: 1.2,
+                      fontSize: { xs: '0.7rem', md: '0.8rem' },
+                      bgcolor: theme.palette.background.paper,
                       '&:hover': {
                         bgcolor: theme.palette.mode === 'dark' ? '#222' : '#f5f5f5',
+                        borderColor: theme.palette.mode === 'dark' ? '#fff' : '#111',
                       },
                     }}
                   >
-                    Se connecter
+                    Google
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    startIcon={<Facebook sx={{ fontSize: { xs: 16, md: 18 }, color: theme.palette.mode === 'dark' ? '#fff' : '#111' }} />}
+                    sx={{
+                      textTransform: 'none',
+                      borderRadius: 2,
+                      fontWeight: 500,
+                      fontFamily: 'Inter, Roboto, Arial, sans-serif',
+                      color: theme.palette.mode === 'dark' ? '#fff' : '#111',
+                      borderColor: theme.palette.mode === 'dark' ? '#fff' : '#111',
+                      height: { xs: 32, md: 38 },
+                      px: 1.2,
+                      fontSize: { xs: '0.7rem', md: '0.8rem' },
+                      bgcolor: theme.palette.background.paper,
+                      '&:hover': {
+                        bgcolor: theme.palette.mode === 'dark' ? '#222' : '#f5f5f5',
+                        borderColor: theme.palette.mode === 'dark' ? '#fff' : '#111',
+                      },
+                    }}
+                  >
+                    Facebook
                   </Button>
                 </Box>
-                <Box sx={{ width: '100%', mt: 2 }}>
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      textAlign: 'center',
-                      mb: 1,
-                      fontSize: { xs: '0.7rem', md: '0.8rem' },
-                      color: theme.palette.mode === 'dark' ? '#fff' : '#111',
-                    }}
-                  >
-                    Ou connectez-vous avec
-                  </Typography>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      gap: 1.2,
-                      flexDirection: { xs: 'column', sm: 'row' },
-                    }}
-                  >
-                    <Button
-                      variant="outlined"
-                      startIcon={<Google sx={{ fontSize: { xs: 16, md: 18 }, color: theme.palette.mode === 'dark' ? '#fff' : '#111' }} />}
-                      sx={{
-                        textTransform: 'none',
-                        borderRadius: 2,
-                        fontWeight: 500,
-                        fontFamily: 'Inter, Roboto, Arial, sans-serif',
-                        color: theme.palette.mode === 'dark' ? '#fff' : '#111',
-                        borderColor: theme.palette.mode === 'dark' ? '#fff' : '#111',
-                        height: { xs: 32, md: 38 },
-                        px: 1.2,
-                        fontSize: { xs: '0.7rem', md: '0.8rem' },
-                        bgcolor: theme.palette.background.paper,
-                        '&:hover': {
-                          bgcolor: theme.palette.mode === 'dark' ? '#222' : '#f5f5f5',
-                          borderColor: theme.palette.mode === 'dark' ? '#fff' : '#111',
-                        },
-                      }}
-                    >
-                      Google
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      startIcon={<Facebook sx={{ fontSize: { xs: 16, md: 18 }, color: theme.palette.mode === 'dark' ? '#fff' : '#111' }} />}
-                      sx={{
-                        textTransform: 'none',
-                        borderRadius: 2,
-                        fontWeight: 500,
-                        fontFamily: 'Inter, Roboto, Arial, sans-serif',
-                        color: theme.palette.mode === 'dark' ? '#fff' : '#111',
-                        borderColor: theme.palette.mode === 'dark' ? '#fff' : '#111',
-                        height: { xs: 32, md: 38 },
-                        px: 1.2,
-                        fontSize: { xs: '0.7rem', md: '0.8rem' },
-                        bgcolor: theme.palette.background.paper,
-                        '&:hover': {
-                          bgcolor: theme.palette.mode === 'dark' ? '#222' : '#f5f5f5',
-                          borderColor: theme.palette.mode === 'dark' ? '#fff' : '#111',
-                        },
-                      }}
-                    >
-                      Facebook
-                    </Button>
-                  </Box>
-                </Box>
-              </Card>
-            </Grid>
+              </Box>
+            </Card>
           </Grid>
-        </Box>
-      </Container>
-    </>
+        </Grid>
+      </Box>
+      <Box
+        sx={{
+          position: 'fixed',
+          bottom: 24,
+          right: 24,
+          zIndex: 1500,
+        }}
+      >
+        <IconButton
+          sx={{
+            color: theme.palette.mode === 'dark' ? '#fff' : '#111',
+            bgcolor: theme.palette.mode === 'light' ? '#f5f5f5' : 'transparent',
+            boxShadow: 2,
+            width: 48,
+            height: 48,
+          }}
+          onClick={useContext(ColorModeContext).toggleColorMode}
+        >
+          {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
+        </IconButton>
+      </Box>
+    </Container>
   );
 }

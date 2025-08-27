@@ -6,7 +6,6 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import PeopleIcon from '@mui/icons-material/People';
 import { Link } from 'react-router-dom';
-import AvatarMenu from './AvatarMenu';
 import Tooltip from '@mui/material/Tooltip';
 import DexboxLogo from '../assets/Dexbox.png';
 
@@ -104,9 +103,6 @@ export default function Sidebar() {
             </ListItemButton>
           </ListItem>
         </List>
-      </Box>
-      <Box sx={{ pl: 1, pb: 2, display: 'flex', justifyContent: 'flex-start' }}>
-        <AvatarMenu />
       </Box>
     </Box>
   );

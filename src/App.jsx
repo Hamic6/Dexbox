@@ -10,6 +10,7 @@ import Sidebar from './components/Sidebar';
 import Box from '@mui/material/Box';
 import { useState, useEffect } from 'react';
 import SplashScreen from './components/SplashScreen';
+import AvatarMenu from './components/AvatarMenu'; // Ajoute cet import
 
 function AppContent() {
   const location = useLocation();
@@ -17,9 +18,30 @@ function AppContent() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      {/* Barre du haut avec AvatarMenu */}
+      {!isLoginPage && (
+        <Box
+          sx={{
+            width: '100vw', // occupe toute la largeur de la fenêtre
+            minHeight: 56, // barre plus fine
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            px: { xs: 2, md: 4 }, // padding responsive
+            pt: 0,
+            position: 'sticky',
+            top: 0,
+            zIndex: 1200,
+            bgcolor: 'background.paper',
+            boxShadow: 1,
+          }}
+        >
+          <AvatarMenu />
+        </Box>
+      )}
       <Box sx={{ display: 'flex', flexGrow: 1 }}>
         {!isLoginPage && <Sidebar />}
-        <Box component="main" sx={{ flexGrow: 1, p: 3 /* arrière-plan supprimé */ }}>
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <Routes>
             <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/login" element={<Login />} />

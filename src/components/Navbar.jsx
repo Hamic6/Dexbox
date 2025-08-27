@@ -1,13 +1,9 @@
-import { AppBar, Toolbar, Typography, Box, IconButton, useMediaQuery, useTheme } from '@mui/material';
+import { AppBar, Toolbar, Typography, Box, useMediaQuery, useTheme } from '@mui/material';
 import DexboxLogo from '../assets/Dexbox.png';
-import { Brightness4, Brightness7 } from '@mui/icons-material';
-import { useContext } from 'react';
-import { ColorModeContext } from '../ColorModeContext'; // adapte le chemin si besoin
 
 export default function Navbar() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const colorMode = useContext(ColorModeContext);
 
   return (
     <AppBar
@@ -68,16 +64,6 @@ export default function Navbar() {
           Dexbox Technologies
         </Typography>
         <Box sx={{ flexGrow: 1 }} />
-        <IconButton
-          sx={{
-            ml: 1,
-            color: theme.palette.mode === 'dark' ? '#fff' : '#111',
-            bgcolor: theme.palette.mode === 'light' ? '#f5f5f5' : 'transparent',
-          }}
-          onClick={colorMode.toggleColorMode}
-        >
-          {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
-        </IconButton>
       </Toolbar>
     </AppBar>
   );
