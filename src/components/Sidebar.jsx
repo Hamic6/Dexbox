@@ -22,29 +22,13 @@ export default function Sidebar() {
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
       <Box>
         <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <Card
-            elevation={4}
-            sx={{
-              p: 1, // padding réduit
-              mb: 1,
-              borderRadius: 3,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              bgcolor: 'background.default',
-              width: 48, // largeur réduite
-              height: 48, // hauteur réduite
-              minWidth: 0,
-              minHeight: 0,
-            }}
-          >
-            <img
-              src={DexboxLogo}
-              alt="Logo Dexbox"
-              title="Dexbox Technologies"
-              style={{ width: 40, height: 40, marginBottom: 4 }}
-            />
-          </Card>
+          {/* Logo agrandi de 25% au total */}
+          <img
+            src={DexboxLogo}
+            alt="Logo Dexbox"
+            title="Dexbox Technologies"
+            style={{ width: 71, height: 71, marginBottom: 4 }} // 40 * 1.25 = 50, arrondi à 51
+          />
           <Typography
             variant="caption"
             sx={{
