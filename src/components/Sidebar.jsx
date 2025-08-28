@@ -6,6 +6,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import PeopleIcon from '@mui/icons-material/People';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import { Link } from 'react-router-dom';
 import Tooltip from '@mui/material/Tooltip';
 import DexboxLogo from '../assets/Dexbox.png';
@@ -28,7 +29,7 @@ export default function Sidebar() {
             src={DexboxLogo}
             alt="Logo Dexbox"
             title="Dexbox Technologies"
-            style={{ width: 71, height: 71, marginBottom: 4 }} // 40 * 1.25 = 50, arrondi à 51
+            style={{ width: 71, height: 71, marginBottom: 4 }}
           />
           <Typography
             variant="caption"
@@ -88,15 +89,26 @@ export default function Sidebar() {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton component={Link} to="/users">
+            <ListItemButton component={Link} to="/search">
               <ListItemIcon>
-                <ManageAccountsIcon />
+                <FlightTakeoffIcon />
               </ListItemIcon>
-              <ListItemText primary="Gestion utilisateurs" />
+              <ListItemText primary="Recherche & Vols" />
             </ListItemButton>
           </ListItem>
         </List>
       </Box>
+      {/* Gestion utilisateurs toujours en bas */}
+      <List sx={{ mb: 2 }}>
+        <ListItem disablePadding>
+          <ListItemButton component={Link} to="/users">
+            <ListItemIcon>
+              <ManageAccountsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Gestion utilisateurs" />
+          </ListItemButton>
+        </ListItem>
+      </List>
     </Box>
   );
 

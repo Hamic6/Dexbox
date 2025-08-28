@@ -20,93 +20,84 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
+import PersonIcon from '@mui/icons-material/Person';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-// Mock reservations
-const mockReservations = [
+// Mock clients
+const mockClients = [
   {
     id: 1,
-    client: 'Alice Dupont',
-    destination: 'Paris',
-    date: '2025-09-10',
-    status: 'Confirmée',
+    name: 'Sophie Bernard',
+    email: 'sophie@client.com',
+    phone: '06 12 34 56 78',
+    avatar: '',
   },
   {
     id: 2,
-    client: 'Bob Martin',
-    destination: 'Rome',
-    date: '2025-09-12',
-    status: 'En attente',
+    name: 'Marc Dubois',
+    email: 'marc@client.com',
+    phone: '06 98 76 54 32',
+    avatar: '',
   },
   {
     id: 3,
-    client: 'Charlie Leroy',
-    destination: 'Tokyo',
-    date: '2025-09-15',
-    status: 'Annulée',
+    name: 'Julie Martin',
+    email: 'julie@client.com',
+    phone: '07 11 22 33 44',
+    avatar: '',
   },
 ];
 
-export default function Reservations() {
+export default function Clients() {
   const theme = useTheme();
-  const [reservations, setReservations] = useState(mockReservations);
+  const [clients, setClients] = useState(mockClients);
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedReservation, setSelectedReservation] = useState(null);
-  const [form, setForm] = useState({
-    client: '',
-    destination: '',
-    date: '',
-    status: 'En attente',
-  });
+  const [selectedClient, setSelectedClient] = useState(null);
+  const [form, setForm] = useState({ name: '', email: '', phone: '' });
 
   const isDark = theme.palette.mode === 'dark';
 
   // Dialog handlers
   const handleOpen = () => {
-    setForm({ client: '', destination: '', date: '', status: 'En attente' });
-    setSelectedReservation(null);
+    setForm({ name: '', email: '', phone: '' });
+    setSelectedClient(null);
     setOpen(true);
   };
   const handleClose = () => setOpen(false);
 
   // Menu handlers
-  const handleMenuOpen = (event, reservation) => {
+  const handleMenuOpen = (event, client) => {
     setAnchorEl(event.currentTarget);
-    setSelectedReservation(reservation);
+    setSelectedClient(client);
   };
   const handleMenuClose = () => {
     setAnchorEl(null);
-    setSelectedReservation(null);
+    setSelectedClient(null);
   };
 
-  // Add or edit reservation
+  // Add or edit client
   const handleSave = () => {
-    if (selectedReservation) {
-      setReservations(
-        reservations.map(r =>
-          r.id === selectedReservation.id ? { ...selectedReservation, ...form } : r
-        )
-      );
+    if (selectedClient) {
+      setClients(clients.map(c => (c.id === selectedClient.id ? { ...selectedClient, ...form } : c)));
     } else {
-      setReservations([
-        ...reservations,
-        { ...form, id: Date.now() },
+      setClients([
+        ...clients,
+        { ...form, id: Date.now(), avatar: '' },
       ]);
     }
     setOpen(false);
   };
 
-  // Delete reservation
+  // Delete client
   const handleDelete = () => {
-    setReservations(reservations.filter(r => r.id !== selectedReservation.id));
+    setClients(clients.filter(c => c.id !== selectedClient.id));
     handleMenuClose();
   };
 
-  // Edit reservation
+  // Edit client
   const handleEdit = () => {
-    setForm(selectedReservation);
+    setForm(selectedClient);
     setOpen(true);
     handleMenuClose();
   };
@@ -130,7 +121,7 @@ export default function Reservations() {
           color: isDark ? '#fff' : '#111',
         }}
       >
-        Gestion des réservations
+        Gestion des clients
       </Typography>
       <Paper
         elevation={3}
@@ -151,7 +142,7 @@ export default function Reservations() {
           mb={2}
         >
           <Typography variant="h6" sx={{ fontWeight: 600 }}>
-            Liste des réservations
+            Liste des clients
           </Typography>
           <Button
             variant="contained"
@@ -170,12 +161,12 @@ export default function Reservations() {
               },
             }}
           >
-            Ajouter une réservation
+            Ajouter un client
           </Button>
         </Stack>
         <Grid container spacing={2}>
-          {reservations.map(reservation => (
-            <Grid item xs={12} sm={6} md={4} key={reservation.id}>
+          {clients.map(client => (
+            <Grid item xs={12} sm={6} md={4} key={client.id}>
               <Paper
                 elevation={2}
                 sx={{
@@ -196,6 +187,7 @@ export default function Reservations() {
                 }}
               >
                 <Avatar
+                  src={client.avatar}
                   sx={{
                     width: 64,
                     height: 64,
@@ -204,34 +196,20 @@ export default function Reservations() {
                     color: isDark ? '#fff' : '#111',
                   }}
                 >
-                  <FlightTakeoffIcon fontSize="large" />
+                  <PersonIcon fontSize="large" />
                 </Avatar>
                 <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 0.5 }}>
-                  {reservation.client}
+                  {client.name}
                 </Typography>
                 <Typography variant="body2" sx={{ mb: 0.5, color: isDark ? '#bbb' : '#555' }}>
-                  {reservation.destination}
+                  {client.email}
                 </Typography>
                 <Typography variant="body2" sx={{ mb: 0.5 }}>
-                  {reservation.date}
-                </Typography>
-                <Typography
-                  variant="caption"
-                  sx={{
-                    fontWeight: 500,
-                    color:
-                      reservation.status === 'Confirmée'
-                        ? '#4caf50'
-                        : reservation.status === 'Annulée'
-                        ? '#f44336'
-                        : '#ff9800',
-                  }}
-                >
-                  {reservation.status}
+                  {client.phone}
                 </Typography>
                 <IconButton
                   aria-label="actions"
-                  onClick={e => handleMenuOpen(e, reservation)}
+                  onClick={e => handleMenuOpen(e, client)}
                   sx={{
                     position: 'absolute',
                     top: 8,
@@ -262,43 +240,30 @@ export default function Reservations() {
       </Paper>
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
         <DialogTitle>
-          {selectedReservation ? 'Modifier la réservation' : 'Ajouter une réservation'}
+          {selectedClient ? 'Modifier le client' : 'Ajouter un client'}
         </DialogTitle>
         <DialogContent>
           <Stack spacing={2} mt={1}>
             <TextField
-              label="Client"
-              value={form.client}
-              onChange={e => setForm({ ...form, client: e.target.value })}
+              label="Nom"
+              value={form.name}
+              onChange={e => setForm({ ...form, name: e.target.value })}
               fullWidth
               autoFocus
             />
             <TextField
-              label="Destination"
-              value={form.destination}
-              onChange={e => setForm({ ...form, destination: e.target.value })}
+              label="Email"
+              value={form.email}
+              onChange={e => setForm({ ...form, email: e.target.value })}
               fullWidth
+              type="email"
             />
             <TextField
-              label="Date"
-              type="date"
-              value={form.date}
-              onChange={e => setForm({ ...form, date: e.target.value })}
+              label="Téléphone"
+              value={form.phone}
+              onChange={e => setForm({ ...form, phone: e.target.value })}
               fullWidth
-              InputLabelProps={{ shrink: true }}
             />
-            <TextField
-              label="Statut"
-              value={form.status}
-              onChange={e => setForm({ ...form, status: e.target.value })}
-              fullWidth
-              select
-              SelectProps={{ native: true }}
-            >
-              <option value="En attente">En attente</option>
-              <option value="Confirmée">Confirmée</option>
-              <option value="Annulée">Annulée</option>
-            </TextField>
           </Stack>
         </DialogContent>
         <DialogActions>
@@ -321,7 +286,7 @@ export default function Reservations() {
               },
             }}
           >
-            {selectedReservation ? 'Enregistrer' : 'Ajouter'}
+            {selectedClient ? 'Enregistrer' : 'Ajouter'}
           </Button>
         </DialogActions>
       </Dialog>

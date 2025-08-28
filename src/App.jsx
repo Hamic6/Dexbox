@@ -12,6 +12,8 @@ import { useState, useEffect } from 'react';
 import SplashScreen from './components/SplashScreen';
 import AvatarMenu from './components/AvatarMenu';
 import Users from './pages/Users'; // Ajoute cet import
+import Clients from './pages/Clients';
+import Search from './pages/Search';
 
 function AppContent() {
   const location = useLocation();
@@ -50,6 +52,8 @@ function AppContent() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/reservations" element={<Reservations />} />
             <Route path="/users" element={<Users />} /> {/* Ajoute cette ligne */}
+            <Route path="/clients" element={<Clients />} />
+            <Route path="/search" element={<Search />} />
           </Routes>
         </Box>
       </Box>
