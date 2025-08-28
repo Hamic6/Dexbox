@@ -10,7 +10,7 @@ import Sidebar from './components/Sidebar';
 import Box from '@mui/material/Box';
 import { useState, useEffect } from 'react';
 import SplashScreen from './components/SplashScreen';
-import AvatarMenu from './components/AvatarMenu'; // Ajoute cet import
+import AvatarMenu from './components/AvatarMenu';
 
 function AppContent() {
   const location = useLocation();
@@ -22,12 +22,12 @@ function AppContent() {
       {!isLoginPage && (
         <Box
           sx={{
-            width: '100vw', // occupe toute la largeur de la fenêtre
-            minHeight: 56, // barre plus fine
+            width: '100vw',
+            minHeight: 56,
             display: 'flex',
             justifyContent: 'flex-end',
             alignItems: 'center',
-            px: { xs: 2, md: 4 }, // padding responsive
+            px: { xs: 2, md: 4 },
             pt: 0,
             position: 'sticky',
             top: 0,

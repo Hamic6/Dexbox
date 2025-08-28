@@ -66,3 +66,22 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+@font-face {
+  font-family: 'Amadeus-Bold';
+  src: url('/fonts/Amadeus-Bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Amadeus-Regular';
+  src: url('/fonts/Amadeus-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Applique la police partout */
+body, * {
+  font-family: 'Amadeus-Regular', 'Amadeus-Bold', Arial, sans-serif;
+}

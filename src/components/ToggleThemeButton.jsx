@@ -1,18 +1,19 @@
 import { IconButton, useTheme } from '@mui/material';
 import { Brightness4, Brightness7 } from '@mui/icons-material';
-import { useColorMode } from '../ColorModeContext';
+import { useContext } from 'react';
+import { ColorModeContext } from '../ColorModeContext';
 
 const ToggleThemeButton = () => {
   const theme = useTheme();
-  const colorMode = useColorMode();
+  const colorMode = useContext(ColorModeContext);
 
   return (
     <IconButton
       onClick={colorMode.toggleColorMode}
       sx={{
         borderRadius: '12px',
-        backgroundColor: theme.palette.mode === 'dark' ? '#1e1e1e' : '#f5f5f5',
-        color: theme.palette.mode === 'dark' ? '#90caf9' : '#1976d2',
+        backgroundColor: theme.palette.mode === 'dark' ? '#222' : '#fff',
+        color: theme.palette.mode === 'dark' ? '#fff' : '#111',
         transition: 'all 0.3s ease',
         position: 'fixed',
         bottom: 24,

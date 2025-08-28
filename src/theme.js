@@ -1,7 +1,7 @@
 import { createTheme } from '@mui/material/styles';
 
-export const getTheme = (mode = 'light') =>
-  createTheme({
+export function getTheme(mode = 'light') {
+  return createTheme({
     palette: {
       mode,
       primary: {
@@ -19,10 +19,9 @@ export const getTheme = (mode = 'light') =>
       },
     },
     typography: {
-      fontFamily: 'Roboto, Arial, sans-serif',
-      h4: {
-        fontWeight: 700,
-      },
+      fontFamily: "'Amadeus-Regular', 'Amadeus-Bold', Arial, sans-serif",
+      fontWeightBold: 700,
+      fontWeightRegular: 400,
     },
     components: {
       MuiButton: {
@@ -41,3 +40,4 @@ export const getTheme = (mode = 'light') =>
       },
     },
   });
+}
