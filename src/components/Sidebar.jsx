@@ -5,6 +5,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import PeopleIcon from '@mui/icons-material/People';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import { Link } from 'react-router-dom';
 import Tooltip from '@mui/material/Tooltip';
 import DexboxLogo from '../assets/Dexbox.png';
@@ -84,6 +85,14 @@ export default function Sidebar() {
                 <PeopleIcon />
               </ListItemIcon>
               <ListItemText primary="Clients" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton component={Link} to="/users">
+              <ListItemIcon>
+                <ManageAccountsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Gestion utilisateurs" />
             </ListItemButton>
           </ListItem>
         </List>

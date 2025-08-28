@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import { useState, useEffect } from 'react';
 import SplashScreen from './components/SplashScreen';
 import AvatarMenu from './components/AvatarMenu';
+import Users from './pages/Users'; // Ajoute cet import
 
 function AppContent() {
   const location = useLocation();
@@ -48,6 +49,7 @@ function AppContent() {
             <Route path="/home" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/reservations" element={<Reservations />} />
+            <Route path="/users" element={<Users />} /> {/* Ajoute cette ligne */}
           </Routes>
         </Box>
       </Box>
