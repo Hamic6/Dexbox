@@ -75,8 +75,7 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simule un chargement (ex: 1.5s)
-    const timer = setTimeout(() => setLoading(false), 1500);
+    const timer = setTimeout(() => setLoading(false), 5000); // SplashScreen affiché 5 secondes
     return () => clearTimeout(timer);
   }, []);
 

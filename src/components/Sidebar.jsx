@@ -10,18 +10,44 @@ import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import { Link } from 'react-router-dom';
 import Tooltip from '@mui/material/Tooltip';
 import DexboxLogo from '../assets/Dexbox.png';
+import PriceCheckIcon from '@mui/icons-material/PriceCheck';
+import LuggageIcon from '@mui/icons-material/Luggage';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import ShieldIcon from '@mui/icons-material/Security';
 
 const drawerWidth = 200;
 
 export default function Sidebar() {
   const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [open, setOpen] = useState(false);
 
   const handleDrawerToggle = () => setOpen(!open);
 
   const drawerContent = (
-    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+    <Box
+      sx={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        overflowY: 'auto',
+        // Scrollbar style selon le thème
+        scrollbarColor: isDark ? '#444 #111' : '#ccc #fff',
+        scrollbarWidth: 'thin',
+        '&::-webkit-scrollbar': {
+          width: 8,
+        },
+        '&::-webkit-scrollbar-thumb': {
+          background: isDark ? '#444' : '#ccc',
+          borderRadius: 8,
+        },
+        '&::-webkit-scrollbar-track': {
+          background: isDark ? '#111' : '#fff',
+        },
+      }}
+    >
       <Box>
         <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           {/* Logo agrandi de 25% au total */}
@@ -73,11 +99,35 @@ export default function Sidebar() {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
+            <ListItemButton component={Link} to="/search">
+              <ListItemIcon>
+                <FlightTakeoffIcon />
+              </ListItemIcon>
+              <ListItemText primary="Recherche multi-critères" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
             <ListItemButton component={Link} to="/reservations">
               <ListItemIcon>
                 <ReceiptIcon />
               </ListItemIcon>
-              <ListItemText primary="Réservations" />
+              <ListItemText primary="Réservations & Billets" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton component={Link} to="/pricing">
+              <ListItemIcon>
+                <PriceCheckIcon />
+              </ListItemIcon>
+              <ListItemText primary="Tarification & Comparaison" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton component={Link} to="/services">
+              <ListItemIcon>
+                <LuggageIcon />
+              </ListItemIcon>
+              <ListItemText primary="Services auxiliaires" />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
@@ -89,11 +139,19 @@ export default function Sidebar() {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton component={Link} to="/search">
+            <ListItemButton component={Link} to="/reporting">
               <ListItemIcon>
-                <FlightTakeoffIcon />
+                <BarChartIcon />
               </ListItemIcon>
-              <ListItemText primary="Recherche & Vols" />
+              <ListItemText primary="Reporting & Back-office" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton component={Link} to="/security">
+              <ListItemIcon>
+                <ShieldIcon />
+              </ListItemIcon>
+              <ListItemText primary="Sécurité & Conformité" />
             </ListItemButton>
           </ListItem>
         </List>
