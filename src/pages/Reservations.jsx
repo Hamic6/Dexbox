@@ -15,6 +15,10 @@ import {
   Stack,
   Menu,
   MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  Pagination,
   useTheme,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -22,6 +26,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import SearchIcon from '@mui/icons-material/Search';
 
 // Mock reservations
 const mockReservations = [
@@ -61,7 +66,28 @@ export default function Reservations() {
     status: 'En attente',
   });
 
+  // Pagination states
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(6);
+
+  // Barre de recherche
+  const [search, setSearch] = useState('');
+
   const isDark = theme.palette.mode === 'dark';
+
+  // Filtrage des réservations selon la recherche
+  const filteredReservations = reservations.filter(r =>
+    r.client.toLowerCase().includes(search.toLowerCase()) ||
+    r.destination.toLowerCase().includes(search.toLowerCase()) ||
+    r.status.toLowerCase().includes(search.toLowerCase())
+  );
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredReservations.length / rowsPerPage);
+  const paginatedReservations = filteredReservations.slice(
+    (page - 1) * rowsPerPage,
+    page * rowsPerPage
+  );
 
   // Dialog handlers
   const handleOpen = () => {
@@ -110,6 +136,11 @@ export default function Reservations() {
     setOpen(true);
     handleMenuClose();
   };
+
+  // Reset page when search changes
+  React.useEffect(() => {
+    setPage(1);
+  }, [search, rowsPerPage]);
 
   return (
     <Box
@@ -173,8 +204,47 @@ export default function Reservations() {
             Ajouter une réservation
           </Button>
         </Stack>
+        {/* Barre de recherche */}
+        <Stack direction="row" alignItems="center" spacing={1} mb={2}>
+          <TextField
+            variant="outlined"
+            size="small"
+            placeholder="Rechercher par client, destination ou statut"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            sx={{ flex: 1 }}
+            InputProps={{
+              startAdornment: <SearchIcon sx={{ mr: 1, color: 'action.active' }} />,
+            }}
+          />
+        </Stack>
+        {/* Pagination controls */}
+        <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={2} mb={2}>
+          <FormControl size="small" sx={{ minWidth: 120 }}>
+            <InputLabel>Lignes/page</InputLabel>
+            <Select
+              value={rowsPerPage}
+              label="Lignes/page"
+              onChange={e => {
+                setRowsPerPage(Number(e.target.value));
+                setPage(1);
+              }}
+            >
+              <MenuItem value={3}>3</MenuItem>
+              <MenuItem value={6}>6</MenuItem>
+              <MenuItem value={9}>9</MenuItem>
+            </Select>
+          </FormControl>
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={(e, value) => setPage(value)}
+            color="primary"
+            size="small"
+          />
+        </Stack>
         <Grid container spacing={2}>
-          {reservations.map(reservation => (
+          {paginatedReservations.map(reservation => (
             <Grid item xs={12} sm={6} md={4} key={reservation.id}>
               <Paper
                 elevation={2}

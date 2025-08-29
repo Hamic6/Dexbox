@@ -14,6 +14,10 @@ import AvatarMenu from './components/AvatarMenu';
 import Users from './pages/Users'; // Ajoute cet import
 import Clients from './pages/Clients';
 import Search from './pages/Search';
+import Profile from './pages/Profile';
+import Settings from './pages/Settings';
+import Terms from './pages/Terms';
+import Support from './pages/Support';
 
 function AppContent() {
   const location = useLocation();
@@ -54,6 +58,10 @@ function AppContent() {
             <Route path="/users" element={<Users />} /> {/* Ajoute cette ligne */}
             <Route path="/clients" element={<Clients />} />
             <Route path="/search" element={<Search />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/support" element={<Support />} />
           </Routes>
         </Box>
       </Box>

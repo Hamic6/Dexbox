@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -16,12 +16,16 @@ import {
   Menu,
   MenuItem,
   useTheme,
+  FormControl,
+  InputLabel,
+  Select,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PersonIcon from '@mui/icons-material/Person';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Pagination from '@mui/material/Pagination';
 
 // Mock clients
 const mockClients = [
@@ -56,7 +60,32 @@ export default function Clients() {
   const [selectedClient, setSelectedClient] = useState(null);
   const [form, setForm] = useState({ name: '', email: '', phone: '' });
 
+  // Barre de recherche
+  const [search, setSearch] = useState('');
+
+  // Pagination
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(6);
+
   const isDark = theme.palette.mode === 'dark';
+
+  // Filtrage des clients selon la recherche
+  const filteredClients = clients.filter(c =>
+    c.name.toLowerCase().includes(search.toLowerCase()) ||
+    c.email.toLowerCase().includes(search.toLowerCase()) ||
+    c.phone.toLowerCase().includes(search.toLowerCase())
+  );
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredClients.length / rowsPerPage);
+  const paginatedClients = filteredClients.slice(
+    (page - 1) * rowsPerPage,
+    page * rowsPerPage
+  );
+
+  useEffect(() => {
+    setPage(1);
+  }, [search, rowsPerPage]);
 
   // Dialog handlers
   const handleOpen = () => {
@@ -164,8 +193,44 @@ export default function Clients() {
             Ajouter un client
           </Button>
         </Stack>
+        {/* Barre de recherche */}
+        <Stack direction="row" alignItems="center" spacing={1} mb={2}>
+          <TextField
+            variant="outlined"
+            size="small"
+            placeholder="Rechercher par nom, email ou téléphone"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            sx={{ flex: 1 }}
+          />
+        </Stack>
+        {/* Pagination controls */}
+        <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={2} mb={2}>
+          <FormControl size="small" sx={{ minWidth: 120 }}>
+            <InputLabel>Lignes/page</InputLabel>
+            <Select
+              value={rowsPerPage}
+              label="Lignes/page"
+              onChange={e => {
+                setRowsPerPage(Number(e.target.value));
+                setPage(1);
+              }}
+            >
+              <MenuItem value={3}>3</MenuItem>
+              <MenuItem value={6}>6</MenuItem>
+              <MenuItem value={9}>9</MenuItem>
+            </Select>
+          </FormControl>
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={(e, value) => setPage(value)}
+            color="primary"
+            size="small"
+          />
+        </Stack>
         <Grid container spacing={2}>
-          {clients.map(client => (
+          {paginatedClients.map(client => (
             <Grid item xs={12} sm={6} md={4} key={client.id}>
               <Paper
                 elevation={2}
