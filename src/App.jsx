@@ -13,6 +13,7 @@ import SplashScreen from './components/SplashScreen';
 import AvatarMenu from './components/AvatarMenu';
 import Users from './pages/Users'; // Ajoute cet import
 import Clients from './pages/Clients';
+import HomeClients from './pages/clients/homeclients'; // Ajoute cet import
 import Search from './pages/Search';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
@@ -57,7 +58,8 @@ function AppContent() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/reservations" element={<Reservations />} />
             <Route path="/users" element={<Users />} /> {/* Ajoute cette ligne */}
-            <Route path="/clients" element={<Clients />} />
+            <Route path="/clients" element={<Clients />} /> {/* Sidebar */}
+            <Route path="/clients/home" element={<HomeClients />} /> {/* Page d'accueil */}
             <Route path="/search" element={<Search />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/settings" element={<Settings />} />

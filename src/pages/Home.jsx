@@ -12,7 +12,7 @@ const modules = [
       "Profils Clients, Profils Voyageurs, Bookings, Dossiers, Devis, Factures, Notes de Crédit, Règlements, Remboursements, Relevé Client.",
     icon: <GroupsIcon sx={{ fontSize: 28 }} />,
     color: 'success.main',
-    link: '/clients',
+    link: '/clients/home', // <-- change ici pour pointer vers homeclients.jsx
   },
   {
     title: 'Fournisseurs',
