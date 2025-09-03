@@ -18,6 +18,7 @@ import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Terms from './pages/Terms';
 import Support from './pages/Support';
+import Sales from './pages/Sales'; // Crée la page si elle n'existe pas
 
 function AppContent() {
   const location = useLocation();
@@ -62,6 +63,7 @@ function AppContent() {
             <Route path="/settings" element={<Settings />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/support" element={<Support />} />
+            <Route path="/sales" element={<Sales />} />
           </Routes>
         </Box>
       </Box>

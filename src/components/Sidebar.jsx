@@ -14,6 +14,9 @@ import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 import LuggageIcon from '@mui/icons-material/Luggage';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import ShieldIcon from '@mui/icons-material/Security';
+import StorefrontIcon from '@mui/icons-material/Storefront';
+import GroupsIcon from '@mui/icons-material/Groups';
+import BusinessCenterIcon from '@mui/icons-material/BusinessCenter'; // Ajoute cette ligne en haut
 
 const drawerWidth = 200;
 
@@ -99,61 +102,33 @@ export default function Sidebar() {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton component={Link} to="/search">
+            <ListItemButton component={Link} to="/sales">
               <ListItemIcon>
-                <FlightTakeoffIcon />
+                <StorefrontIcon /> {/* Icône "Espace ventes" plus adaptée */}
               </ListItemIcon>
-              <ListItemText primary="Recherche multi-critères" />
+              <ListItemText primary="Espace ventes" />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton component={Link} to="/reservations">
-              <ListItemIcon>
-                <ReceiptIcon />
-              </ListItemIcon>
-              <ListItemText primary="Réservations & Billets" />
-            </ListItemButton>
-          </ListItem>
+          
           <ListItem disablePadding>
             <ListItemButton component={Link} to="/pricing">
               <ListItemIcon>
-                <PriceCheckIcon />
+                <BusinessCenterIcon /> {/* Icône "Espace Fournisseur" plus adaptée */}
               </ListItemIcon>
-              <ListItemText primary="Tarification & Comparaison" />
+              <ListItemText primary="Espace Fournisseur" />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton component={Link} to="/services">
-              <ListItemIcon>
-                <LuggageIcon />
-              </ListItemIcon>
-              <ListItemText primary="Services auxiliaires" />
-            </ListItemButton>
-          </ListItem>
+          
           <ListItem disablePadding>
             <ListItemButton component={Link} to="/clients">
               <ListItemIcon>
                 <PeopleIcon />
               </ListItemIcon>
-              <ListItemText primary="Clients" />
+              <ListItemText primary="Espaces Clients" />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton component={Link} to="/reporting">
-              <ListItemIcon>
-                <BarChartIcon />
-              </ListItemIcon>
-              <ListItemText primary="Reporting & Back-office" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton component={Link} to="/security">
-              <ListItemIcon>
-                <ShieldIcon />
-              </ListItemIcon>
-              <ListItemText primary="Sécurité & Conformité" />
-            </ListItemButton>
-          </ListItem>
+          
+          
         </List>
       </Box>
       {/* Gestion utilisateurs toujours en bas */}
@@ -163,7 +138,7 @@ export default function Sidebar() {
             <ListItemIcon>
               <ManageAccountsIcon />
             </ListItemIcon>
-            <ListItemText primary="Gestion utilisateurs" />
+            <ListItemText primary="Espace Agent" />
           </ListItemButton>
         </ListItem>
       </List>
