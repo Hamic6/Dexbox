@@ -4,6 +4,7 @@ import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import BarChartIcon from '@mui/icons-material/BarChart';
+import { useNavigate } from 'react-router-dom';
 
 const modules = [
   {
@@ -49,6 +50,8 @@ const modules = [
 ];
 
 export default function Home() {
+  const navigate = useNavigate();
+
   return (
     <Box sx={{ p: { xs: 2, md: 4 }, maxWidth: 900, mx: 'auto' }}>
       <Typography
@@ -88,7 +91,7 @@ export default function Home() {
                   color: '#fff',
                 },
               }}
-              onClick={() => (window.location.href = mod.link)}
+              onClick={() => navigate(mod.link)}
             >
               <Avatar sx={{ bgcolor: mod.color, mb: 2, width: 48, height: 48 }}>
                 {mod.icon}

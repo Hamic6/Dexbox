@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Box, IconButton, useTheme, useMediaQuery, Typography, Card } from '@mui/material';
+import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Box, IconButton, useTheme, useMediaQuery, Typography, Card, Collapse } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -16,15 +16,17 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import ShieldIcon from '@mui/icons-material/Security';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import GroupsIcon from '@mui/icons-material/Groups';
-import BusinessCenterIcon from '@mui/icons-material/BusinessCenter'; // Ajoute cette ligne en haut
+import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-const drawerWidth = 200;
+const drawerWidth = 260; // Mets la largeur que tu veux (ex: 260, 300, etc.)
 
 export default function Sidebar() {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [open, setOpen] = useState(false);
+  const [clientsOpen, setClientsOpen] = useState(false);
 
   const handleDrawerToggle = () => setOpen(!open);
 
@@ -36,7 +38,6 @@ export default function Sidebar() {
         flexDirection: 'column',
         justifyContent: 'space-between',
         overflowY: 'auto',
-        // Scrollbar style selon le thème
         scrollbarColor: isDark ? '#444 #111' : '#ccc #fff',
         scrollbarWidth: 'thin',
         '&::-webkit-scrollbar': {
@@ -53,7 +54,6 @@ export default function Sidebar() {
     >
       <Box>
         <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          {/* Logo agrandi de 25% au total */}
           <img
             src={DexboxLogo}
             alt="Logo Dexbox"
@@ -119,19 +119,37 @@ export default function Sidebar() {
             </ListItemButton>
           </ListItem>
           
+         
+          <Collapse in={clientsOpen} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding sx={{ pl: 4 }}>
+              <ListItem disablePadding>
+                <ListItemButton component={Link} to="/clients">
+                  <ListItemIcon>
+                    <GroupsIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Gestion des clients" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton component={Link} to="/gestiondesvoyageurs">
+                  <ListItemIcon>
+                    <FlightTakeoffIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Gestion des voyageurs" />
+                </ListItemButton>
+              </ListItem>
+            </List>
+          </Collapse>
           <ListItem disablePadding>
-            <ListItemButton component={Link} to="/clients">
+            <ListItemButton component={Link} to="/espaceclient">
               <ListItemIcon>
                 <PeopleIcon />
               </ListItemIcon>
-              <ListItemText primary="Espaces Clients" />
+              <ListItemText primary="Espace client" />
             </ListItemButton>
           </ListItem>
-          
-          
         </List>
       </Box>
-      {/* Gestion utilisateurs toujours en bas */}
       <List sx={{ mb: 2 }}>
         <ListItem disablePadding>
           <ListItemButton component={Link} to="/users">

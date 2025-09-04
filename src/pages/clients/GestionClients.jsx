@@ -11,7 +11,6 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions,
   Stack,
   Menu,
   MenuItem,
@@ -19,46 +18,76 @@ import {
   FormControl,
   InputLabel,
   Select,
+  Snackbar,
+  Alert,
+  DialogActions,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import PersonIcon from '@mui/icons-material/Person';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Pagination from '@mui/material/Pagination';
+import ModifierClient from './ModifierClient';
+import Clientpdf from './Clientpdf';
+import { useNavigate } from 'react-router-dom';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 
-// Mock clients
+// Mock clients avec statut actif/inactif
 const mockClients = [
   {
     id: 1,
+    civilite: 'Mme',
+    code: 'C001',
+    prenom: 'Sophie',
+    nom: 'Bernard',
     name: 'Sophie Bernard',
     email: 'sophie@client.com',
     phone: '06 12 34 56 78',
     avatar: '',
+    actif: true,
+    // autres champs mockés si besoin
   },
   {
     id: 2,
+    civilite: 'M.',
+    code: 'C002',
+    prenom: 'Marc',
+    nom: 'Dubois',
     name: 'Marc Dubois',
     email: 'marc@client.com',
     phone: '06 98 76 54 32',
     avatar: '',
+    actif: false,
   },
   {
     id: 3,
+    civilite: 'Mme',
+    code: 'C003',
+    prenom: 'Julie',
+    nom: 'Martin',
     name: 'Julie Martin',
     email: 'julie@client.com',
     phone: '07 11 22 33 44',
     avatar: '',
+    actif: true,
   },
 ];
 
-export default function Clients() {
+export default function GestionClients() {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [clients, setClients] = useState(mockClients);
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedClient, setSelectedClient] = useState(null);
-  const [form, setForm] = useState({ name: '', email: '', phone: '' });
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [pdfClient, setPdfClient] = useState(null);
+
+  // Snackbar
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMsg, setSnackbarMsg] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
   // Barre de recherche
   const [search, setSearch] = useState('');
@@ -71,9 +100,9 @@ export default function Clients() {
 
   // Filtrage des clients selon la recherche
   const filteredClients = clients.filter(c =>
-    c.name.toLowerCase().includes(search.toLowerCase()) ||
-    c.email.toLowerCase().includes(search.toLowerCase()) ||
-    c.phone.toLowerCase().includes(search.toLowerCase())
+    (c.name || `${c.prenom} ${c.nom}` || '').toLowerCase().includes(search.toLowerCase()) ||
+    (c.email || '').toLowerCase().includes(search.toLowerCase()) ||
+    (c.phone || '').toLowerCase().includes(search.toLowerCase())
   );
 
   // Pagination logic
@@ -87,14 +116,6 @@ export default function Clients() {
     setPage(1);
   }, [search, rowsPerPage]);
 
-  // Dialog handlers
-  const handleOpen = () => {
-    setForm({ name: '', email: '', phone: '' });
-    setSelectedClient(null);
-    setOpen(true);
-  };
-  const handleClose = () => setOpen(false);
-
   // Menu handlers
   const handleMenuOpen = (event, client) => {
     setAnchorEl(event.currentTarget);
@@ -103,32 +124,65 @@ export default function Clients() {
   const handleMenuClose = () => {
     setAnchorEl(null);
     setSelectedClient(null);
+    setPdfClient(null);
   };
 
-  // Add or edit client
-  const handleSave = () => {
-    if (selectedClient) {
-      setClients(clients.map(c => (c.id === selectedClient.id ? { ...selectedClient, ...form } : c)));
-    } else {
-      setClients([
-        ...clients,
-        { ...form, id: Date.now(), avatar: '' },
-      ]);
-    }
-    setOpen(false);
+  // Activer/désactiver client (show confirmation dialog)
+  const handleToggleActive = () => {
+    setConfirmOpen(true);
+    setAnchorEl(null);
   };
 
-  // Delete client
-  const handleDelete = () => {
-    setClients(clients.filter(c => c.id !== selectedClient.id));
-    handleMenuClose();
+  // Confirm activation/désactivation
+  const handleConfirmToggle = () => {
+    setClients(clients.map(c =>
+      c.id === selectedClient.id ? { ...c, actif: !c.actif } : c
+    ));
+    setSnackbarMsg(
+      selectedClient.actif
+        ? 'Client désactivé avec succès.'
+        : 'Client activé avec succès.'
+    );
+    setSnackbarSeverity('success');
+    setSnackbarOpen(true);
+    setConfirmOpen(false);
+    setSelectedClient(null);
+  };
+
+  const handleCancelToggle = () => {
+    setConfirmOpen(false);
+    setSelectedClient(null);
   };
 
   // Edit client
   const handleEdit = () => {
-    setForm(selectedClient);
     setOpen(true);
-    handleMenuClose();
+    setAnchorEl(null);
+  };
+
+  // Save client modification (reçoit toutes les données du client modifié depuis add.jsx)
+  const handleSave = (updatedClient) => {
+    setClients(clients.map(c => c.id === updatedClient.id ? { ...updatedClient, name: `${updatedClient.prenom} ${updatedClient.nom}` } : c));
+    setSnackbarMsg('Client modifié avec succès.');
+    setSnackbarSeverity('success');
+    setSnackbarOpen(true);
+    setOpen(false);
+    setSelectedClient(null);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedClient(null);
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
+  // PDF download handler
+  const handleDownloadPdf = () => {
+    setPdfClient(selectedClient);
+    setAnchorEl(null);
   };
 
   return (
@@ -176,7 +230,7 @@ export default function Clients() {
           <Button
             variant="contained"
             startIcon={<AddIcon />}
-            onClick={handleOpen}
+            onClick={() => navigate('/clients/add')}
             sx={{
               bgcolor: isDark ? '#fff' : '#111',
               color: isDark ? '#111' : '#fff',
@@ -272,6 +326,16 @@ export default function Clients() {
                 <Typography variant="body2" sx={{ mb: 0.5 }}>
                   {client.phone}
                 </Typography>
+                <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: 1 }}>
+                  <PowerSettingsNewIcon
+                    color={client.actif ? 'success' : 'error'}
+                    sx={{ cursor: 'pointer' }}
+                    onClick={e => handleMenuOpen(e, client)}
+                  />
+                  <Typography variant="caption" sx={{ color: client.actif ? 'success.main' : 'error.main', fontWeight: 600 }}>
+                    {client.actif ? 'Actif' : 'Inactif'}
+                  </Typography>
+                </Stack>
                 <IconButton
                   aria-label="actions"
                   onClick={e => handleMenuOpen(e, client)}
@@ -297,64 +361,61 @@ export default function Clients() {
             <EditIcon fontSize="small" sx={{ mr: 1 }} />
             Modifier
           </MenuItem>
-          <MenuItem onClick={handleDelete}>
-            <DeleteIcon fontSize="small" sx={{ mr: 1 }} />
-            Supprimer
+          <MenuItem onClick={handleToggleActive}>
+            <PowerSettingsNewIcon fontSize="small" sx={{ mr: 1, color: selectedClient?.actif ? 'green' : 'red' }} />
+            {selectedClient?.actif ? 'Désactiver' : 'Activer'}
+          </MenuItem>
+          <MenuItem onClick={handleDownloadPdf}>
+            <PictureAsPdfIcon fontSize="small" sx={{ mr: 1 }} />
+            Télécharger PDF
           </MenuItem>
         </Menu>
+        {/* PDF DownloadLink appears only when requested */}
+        {pdfClient && (
+          <Box sx={{ display: 'none' }}>
+            <Clientpdf client={pdfClient} />
+          </Box>
+        )}
       </Paper>
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
-        <DialogTitle>
-          {selectedClient ? 'Modifier le client' : 'Ajouter un client'}
-        </DialogTitle>
+      <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+        <DialogTitle>Modifier le client</DialogTitle>
         <DialogContent>
-          <Stack spacing={2} mt={1}>
-            <TextField
-              label="Nom"
-              value={form.name}
-              onChange={e => setForm({ ...form, name: e.target.value })}
-              fullWidth
-              autoFocus
+          {selectedClient && (
+            <ModifierClient
+              client={selectedClient}
+              onSave={handleSave}
+              onCancel={handleClose}
             />
-            <TextField
-              label="Email"
-              value={form.email}
-              onChange={e => setForm({ ...form, email: e.target.value })}
-              fullWidth
-              type="email"
-            />
-            <TextField
-              label="Téléphone"
-              value={form.phone}
-              onChange={e => setForm({ ...form, phone: e.target.value })}
-              fullWidth
-            />
-          </Stack>
+          )}
+        </DialogContent>
+      </Dialog>
+      {/* Confirmation dialog for activation/deactivation */}
+      <Dialog open={confirmOpen} onClose={handleCancelToggle}>
+        <DialogTitle>Confirmer l'{selectedClient?.actif ? 'désactivation' : 'activation'}</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Voulez-vous vraiment {selectedClient?.actif ? 'désactiver' : 'activer'} ce client&nbsp;?
+          </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="inherit">
+          <Button onClick={handleCancelToggle} color="inherit">
             Annuler
           </Button>
-          <Button
-            onClick={handleSave}
-            variant="contained"
-            sx={{
-              bgcolor: theme.palette.primary.main,
-              color: '#fff',
-              fontWeight: 700,
-              borderRadius: 2,
-              px: 3,
-              py: 1,
-              boxShadow: 2,
-              '&:hover': {
-                bgcolor: theme.palette.primary.dark,
-              },
-            }}
-          >
-            {selectedClient ? 'Enregistrer' : 'Ajouter'}
+          <Button onClick={handleConfirmToggle} color={selectedClient?.actif ? 'error' : 'success'} variant="contained">
+            {selectedClient?.actif ? 'Désactiver' : 'Activer'}
           </Button>
         </DialogActions>
       </Dialog>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={4000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert severity={snackbarSeverity} sx={{ width: '100%' }}>
+          {snackbarMsg}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
