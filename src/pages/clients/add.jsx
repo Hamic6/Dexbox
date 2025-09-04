@@ -18,6 +18,8 @@ import {
 } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import AddClientMobile from './AddClientMobile';
 
 // Mock options pour la sélection
 const agencesOptions = [
@@ -80,6 +82,7 @@ export default function AddClient({ mode = 'add', client, onSave }) {
     notes: '',
   });
   const [voyageurs, setVoyageurs] = useState([]);
+  const isMobile = useMediaQuery('(max-width:600px)');
 
   // Pré-remplissage si mode edit
   useEffect(() => {
@@ -155,7 +158,9 @@ export default function AddClient({ mode = 'add', client, onSave }) {
     }
   };
 
-  return (
+  return isMobile ? (
+    <AddClientMobile mode={mode} client={client} onSave={onSave} />
+  ) : (
     <Box sx={{ p: { xs: 2, md: 4 }, maxWidth: 700, mx: 'auto' }}>
       <Paper elevation={3} sx={{ p: 3, borderRadius: 3 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
