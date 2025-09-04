@@ -6,6 +6,7 @@ import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import BusinessIcon from '@mui/icons-material/Business';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import DiscountIcon from '@mui/icons-material/Discount';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { useNavigate } from 'react-router-dom';
 
 const cards = [
@@ -52,9 +53,14 @@ export default function HomeClients() {
 
   return (
     <Box sx={{ p: { xs: 1, md: 3 } }}>
-      <Typography variant="h4" fontWeight={700} mb={3}>
-        Clients
-      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, gap: 2 }}>
+        <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48 }}>
+          <PeopleAltIcon sx={{ fontSize: 32 }} />
+        </Avatar>
+        <Typography variant="h4" fontWeight={700}>
+          Clients
+        </Typography>
+      </Box>
       <Grid
         container
         spacing={{ xs: 2, md: 3 }}

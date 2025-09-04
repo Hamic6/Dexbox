@@ -14,9 +14,32 @@ import {
   FormControlLabel,
   Avatar,
   IconButton,
+  Autocomplete,
 } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
+
+// Mock options pour la sélection
+const agencesOptions = [
+  { label: 'Agence Paris', id: 1 },
+  { label: 'Agence Lyon', id: 2 },
+  { label: 'Agence Marseille', id: 3 },
+];
+const voyageursOptions = [
+  { label: 'Alice Dupont', id: 1 },
+  { label: 'Bob Martin', id: 2 },
+  { label: 'Charlie Dubois', id: 3 },
+];
+const departementsOptions = [
+  { label: 'Commercial', id: 1 },
+  { label: 'Marketing', id: 2 },
+  { label: 'Finance', id: 3 },
+];
+const remisesOptions = [
+  { label: 'Remise 10%', id: 1 },
+  { label: 'Remise 20%', id: 2 },
+  { label: 'Remise fidélité', id: 3 },
+];
 
 export default function AddClient({ mode = 'add', client, onSave }) {
   const [tab, setTab] = useState(0);
@@ -40,8 +63,8 @@ export default function AddClient({ mode = 'add', client, onSave }) {
     web: '',
     contact1: { civilite: '', prenom: '', nom: '', fonction: '', adresse: '', anniversaire: '', tel: '', mob: '', fax: '', mail: '', web: '' },
     contact2: { civilite: '', prenom: '', nom: '', fonction: '', adresse: '', anniversaire: '', tel: '', mob: '', fax: '', mail: '', web: '' },
-    agences: '',
-    departements: '',
+    agences: [],
+    departements: [],
     creditLimite: '',
     compteTiers: '',
     compteGeneral: '',
@@ -53,7 +76,7 @@ export default function AddClient({ mode = 'add', client, onSave }) {
     exonerations: '',
     echeance: '',
     marketing: [],
-    remises: '',
+    remises: [],
     notes: '',
   });
   const [voyageurs, setVoyageurs] = useState([]);
@@ -66,11 +89,14 @@ export default function AddClient({ mode = 'add', client, onSave }) {
         ...client,
         contact1: client.contact1 || form.contact1,
         contact2: client.contact2 || form.contact2,
+        agences: client.agences || [],
+        departements: client.departements || [],
+        remises: client.remises || [],
       });
       setProfilePhoto(client.profilePhoto || null);
       setVoyageurs(client.voyageurs || []);
     }
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [mode, client]);
 
   const handleTabChange = (e, newValue) => setTab(newValue);
@@ -106,25 +132,9 @@ export default function AddClient({ mode = 'add', client, onSave }) {
     }
   };
 
-  // Ajout d'un voyageur
-  const handleAddVoyageur = () => {
-    setVoyageurs([
-      ...voyageurs,
-      { nom: '', prenom: '', passeport: '', dateNaissance: '' }
-    ]);
-  };
-
-  // Modification d'un voyageur
-  const handleVoyageurChange = (idx, e) => {
-    const { name, value } = e.target;
-    setVoyageurs(v =>
-      v.map((voy, i) => (i === idx ? { ...voy, [name]: value } : voy))
-    );
-  };
-
-  // Suppression d'un voyageur
-  const handleRemoveVoyageur = (idx) => {
-    setVoyageurs(v => v.filter((_, i) => i !== idx));
+  // Sélection voyageurs
+  const handleVoyageursSelect = (event, value) => {
+    setVoyageurs(value);
   };
 
   const handleSubmit = async (e) => {
@@ -235,85 +245,53 @@ export default function AddClient({ mode = 'add', client, onSave }) {
           )}
           {tab === 2 && (
             <Grid container spacing={2}>
-              <Grid item xs={12}><TextField label="Agences (points de vente)" name="agences" value={form.agences} onChange={handleChange} fullWidth /></Grid>
+              <Grid item xs={12}>
+                <Autocomplete
+                  multiple
+                  options={agencesOptions}
+                  getOptionLabel={option => option.label}
+                  value={form.agences}
+                  onChange={(e, value) => setForm(f => ({ ...f, agences: value }))}
+                  renderInput={params => (
+                    <TextField {...params} label="Sélectionner les agences" placeholder="Agences" />
+                  )}
+                  isOptionEqualToValue={(option, value) => option.id === value.id}
+                />
+              </Grid>
             </Grid>
           )}
           {tab === 3 && (
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Typography fontWeight={600} mb={1}>
-                  Voyageurs liés au client
-                </Typography>
-                {voyageurs.map((voy, idx) => (
-                  <Grid container spacing={1} key={idx} sx={{ mb: 1 }}>
-                    <Grid item xs={5}>
-                      <TextField
-                        label="Nom"
-                        name="nom"
-                        value={voy.nom}
-                        onChange={e => handleVoyageurChange(idx, e)}
-                        fullWidth
-                        size="small"
-                      />
-                    </Grid>
-                    <Grid item xs={5}>
-                      <TextField
-                        label="Prénom"
-                        name="prenom"
-                        value={voy.prenom}
-                        onChange={e => handleVoyageurChange(idx, e)}
-                        fullWidth
-                        size="small"
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        label="Passeport"
-                        name="passeport"
-                        value={voy.passeport}
-                        onChange={e => handleVoyageurChange(idx, e)}
-                        fullWidth
-                        size="small"
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                        label="Date de naissance"
-                        name="dateNaissance"
-                        value={voy.dateNaissance}
-                        onChange={e => handleVoyageurChange(idx, e)}
-                        fullWidth
-                        size="small"
-                        type="date"
-                        InputLabelProps={{ shrink: true }}
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Button
-                        color="error"
-                        size="small"
-                        onClick={() => handleRemoveVoyageur(idx)}
-                        sx={{ mt: 1 }}
-                      >
-                        Supprimer
-                      </Button>
-                    </Grid>
-                  </Grid>
-                ))}
-                <Button
-                  variant="outlined"
-                  onClick={handleAddVoyageur}
-                  sx={{ mt: 2 }}
-                >
-                  Ajouter un voyageur
-                </Button>
+                <Autocomplete
+                  multiple
+                  options={voyageursOptions}
+                  getOptionLabel={option => option.label}
+                  value={voyageurs}
+                  onChange={handleVoyageursSelect}
+                  renderInput={params => (
+                    <TextField {...params} label="Sélectionner les voyageurs" placeholder="Voyageurs" />
+                  )}
+                  isOptionEqualToValue={(option, value) => option.id === value.id}
+                />
               </Grid>
             </Grid>
           )}
           {tab === 4 && (
             <Grid container spacing={2}>
-              <Grid item xs={8}><TextField label="Départements" name="departements" value={form.departements} onChange={handleChange} fullWidth /></Grid>
-              <Grid item xs={4}><TextField label="Crédit limite" name="creditLimite" value={form.creditLimite} onChange={handleChange} fullWidth /></Grid>
+              <Grid item xs={12}>
+                <Autocomplete
+                  multiple
+                  options={departementsOptions}
+                  getOptionLabel={option => option.label}
+                  value={form.departements}
+                  onChange={(e, value) => setForm(f => ({ ...f, departements: value }))}
+                  renderInput={params => (
+                    <TextField {...params} label="Sélectionner les départements" placeholder="Départements" />
+                  )}
+                  isOptionEqualToValue={(option, value) => option.id === value.id}
+                />
+              </Grid>
             </Grid>
           )}
           {tab === 5 && (
@@ -359,7 +337,19 @@ export default function AddClient({ mode = 'add', client, onSave }) {
           )}
           {tab === 7 && (
             <Grid container spacing={2}>
-              <Grid item xs={12}><TextField label="Remises (produits/taux/montant)" name="remises" value={form.remises} onChange={handleChange} fullWidth /></Grid>
+              <Grid item xs={12}>
+                <Autocomplete
+                  multiple
+                  options={remisesOptions}
+                  getOptionLabel={option => option.label}
+                  value={form.remises}
+                  onChange={(e, value) => setForm(f => ({ ...f, remises: value }))}
+                  renderInput={params => (
+                    <TextField {...params} label="Sélectionner les remises" placeholder="Remises" />
+                  )}
+                  isOptionEqualToValue={(option, value) => option.id === value.id}
+                />
+              </Grid>
             </Grid>
           )}
           {tab === 8 && (
