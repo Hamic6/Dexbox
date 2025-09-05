@@ -1,43 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box,
-  Typography,
-  Paper,
-  Tabs,
-  Tab,
-  Button,
-  Snackbar,
-  Alert,
-  TextField,
-  Grid,
-  Checkbox,
-  FormControlLabel,
-  Avatar,
-  IconButton,
-  Autocomplete,
+  Box, Typography, Paper, Tabs, Tab, Button, Snackbar, Alert, TextField, Grid,
+  Checkbox, FormControlLabel, Avatar, IconButton, Autocomplete
 } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import AddClientMobile from './AddClientMobile';
-import { remisesOptions } from '../../mocks/mockRemises';
-
-// Mock options pour la sélection
-const agencesOptions = [
-  { label: 'Agence Paris', id: 1 },
-  { label: 'Agence Lyon', id: 2 },
-  { label: 'Agence Marseille', id: 3 },
-];
-const voyageursOptions = [
-  { label: 'Alice Dupont', id: 1 },
-  { label: 'Bob Martin', id: 2 },
-  { label: 'Charlie Dubois', id: 3 },
-];
-const departementsOptions = [
-  { label: 'Commercial', id: 1 },
-  { label: 'Marketing', id: 2 },
-  { label: 'Finance', id: 3 },
-];
+import { db, storage } from '../../firebase';
+import { collection, addDoc, updateDoc, doc, getDocs } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export default function AddClient({ mode = 'add', client, onSave }) {
   const [tab, setTab] = useState(0);
@@ -79,7 +51,29 @@ export default function AddClient({ mode = 'add', client, onSave }) {
   });
   const [voyageurs, setVoyageurs] = useState([]);
   const [remises, setRemises] = useState([]);
+  const [agencesOptions, setAgencesOptions] = useState([]);
+  const [voyageursOptions, setVoyageursOptions] = useState([]);
+  const [departementsOptions, setDepartementsOptions] = useState([]);
+  const [remisesOptions, setRemisesOptions] = useState([]);
   const isMobile = useMediaQuery('(max-width:600px)');
+
+  // Charger dynamiquement les options Firestore
+  useEffect(() => {
+    async function fetchOptions() {
+      const agencesSnap = await getDocs(collection(db, "agences"));
+      setAgencesOptions(agencesSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+
+      const voyageursSnap = await getDocs(collection(db, "voyageurs"));
+      setVoyageursOptions(voyageursSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+
+      const departementsSnap = await getDocs(collection(db, "departements"));
+      setDepartementsOptions(departementsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+
+      const remisesSnap = await getDocs(collection(db, "remises"));
+      setRemisesOptions(remisesSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    }
+    fetchOptions();
+  }, []);
 
   // Pré-remplissage si mode edit
   useEffect(() => {
@@ -95,6 +89,7 @@ export default function AddClient({ mode = 'add', client, onSave }) {
       });
       setProfilePhoto(client.profilePhoto || null);
       setVoyageurs(client.voyageurs || []);
+      setRemises(client.remises || []);
     }
     // eslint-disable-next-line
   }, [mode, client]);
@@ -124,11 +119,14 @@ export default function AddClient({ mode = 'add', client, onSave }) {
     }));
   };
 
-  const handlePhotoChange = (e) => {
+  const handlePhotoChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      setProfilePhoto(URL.createObjectURL(file));
-      // Pour l'enregistrement, tu pourras envoyer le fichier à Firebase Storage plus tard
+      // Upload sur Firebase Storage
+      const storageRef = ref(storage, `clients/${file.name}`);
+      await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(storageRef);
+      setProfilePhoto(url); // Stocke l'URL dans Firestore ensuite
     }
   };
 
@@ -141,14 +139,26 @@ export default function AddClient({ mode = 'add', client, onSave }) {
     e.preventDefault();
     try {
       if (mode === 'add') {
-        // await firebase.firestore().collection('clients').add({ ...form, profilePhoto, voyageurs });
+        await addDoc(collection(db, "clients"), {
+          ...form,
+          profilePhoto,
+          voyageurs,
+          remises,
+          createdAt: new Date()
+        });
         setSnackbarMsg('Client enregistré avec succès sur Google Cloud !');
-      } else {
-        // await firebase.firestore().collection('clients').doc(client.id).update({ ...form, profilePhoto, voyageurs });
+      } else if (mode === 'edit' && client && client.id) {
+        await updateDoc(doc(db, "clients", client.id), {
+          ...form,
+          profilePhoto,
+          voyageurs,
+          remises,
+          updatedAt: new Date()
+        });
         setSnackbarMsg('Client modifié avec succès !');
       }
       setOpenSnackbar(true);
-      if (onSave) onSave({ ...form, profilePhoto, voyageurs });
+      if (onSave) onSave({ ...form, profilePhoto, voyageurs, remises });
     } catch (err) {
       setSnackbarMsg('Erreur lors de l\'enregistrement du client.');
       setOpenSnackbar(true);
@@ -251,7 +261,7 @@ export default function AddClient({ mode = 'add', client, onSave }) {
                 <Autocomplete
                   multiple
                   options={agencesOptions}
-                  getOptionLabel={option => option.label}
+                  getOptionLabel={option => option.label || option.nom || ''}
                   value={form.agences}
                   onChange={(e, value) => setForm(f => ({ ...f, agences: value }))}
                   renderInput={params => (
@@ -268,7 +278,7 @@ export default function AddClient({ mode = 'add', client, onSave }) {
                 <Autocomplete
                   multiple
                   options={voyageursOptions}
-                  getOptionLabel={option => option.label}
+                  getOptionLabel={option => option.label || option.nom || ''}
                   value={voyageurs}
                   onChange={handleVoyageursSelect}
                   renderInput={params => (
@@ -285,7 +295,7 @@ export default function AddClient({ mode = 'add', client, onSave }) {
                 <Autocomplete
                   multiple
                   options={departementsOptions}
-                  getOptionLabel={option => option.label}
+                  getOptionLabel={option => option.label || option.nom || ''}
                   value={form.departements}
                   onChange={(e, value) => setForm(f => ({ ...f, departements: value }))}
                   renderInput={params => (
@@ -343,7 +353,7 @@ export default function AddClient({ mode = 'add', client, onSave }) {
                 <Autocomplete
                   multiple
                   options={remisesOptions}
-                  getOptionLabel={option => option.label}
+                  getOptionLabel={option => option.label || option.nom || ''}
                   value={remises}
                   onChange={(e, value) => setRemises(value)}
                   renderInput={params => (
@@ -355,7 +365,7 @@ export default function AddClient({ mode = 'add', client, onSave }) {
                   <Box sx={{ mt: 1 }}>
                     {remises.map(remise => (
                       <Typography key={remise.id} variant="body2" color="text.secondary">
-                        {remise.label} — {remise.type === 'pourcentage' ? `${remise.valeur}%` : `${remise.valeur}€`} — {remise.cible}
+                        {remise.label || remise.nom} — {remise.type === 'pourcentage' ? `${remise.valeur}%` : `${remise.valeur}€`} — {remise.cible}
                         {remise.conditions && ` — ${remise.conditions}`}
                       </Typography>
                     ))}

@@ -5,6 +5,8 @@ import DexboxLogo from '../assets/Dexbox.png';
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ColorModeContext } from '../ColorModeContext';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from '../firebase';
 
 export default function Login() {
   const theme = useTheme();
@@ -12,6 +14,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -19,20 +22,28 @@ export default function Login() {
     setFormData({ ...formData, [prop]: event.target.value });
     setError('');
   };
-  const handleSubmit = (event) => {
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setError('');
     if (!formData.email || !formData.password) {
       setError('Veuillez remplir tous les champs.');
       return;
     }
-    if (
-      formData.email === 'agent@agence.com' &&
-      formData.password === '123456'
-    ) {
-      navigate('/home'); // Redirection vers la page d'accueil
-    } else {
-      setError('Identifiants incorrects.');
+    setLoading(true);
+    try {
+      await signInWithEmailAndPassword(auth, formData.email, formData.password);
+      navigate('/home');
+    } catch (err) {
+      if (err.code === "auth/user-not-found" || err.code === "auth/wrong-password") {
+        setError("Identifiants incorrects.");
+      } else if (err.code === "auth/invalid-email") {
+        setError("Adresse email invalide.");
+      } else {
+        setError("Erreur de connexion. Veuillez réessayer.");
+      }
     }
+    setLoading(false);
   };
 
   return (
@@ -321,8 +332,9 @@ export default function Login() {
                       bgcolor: theme.palette.mode === 'dark' ? '#222' : '#f5f5f5',
                     },
                   }}
+                  disabled={loading}
                 >
-                  Se connecter
+                  {loading ? 'Chargement...' : 'Se connecter'}
                 </Button>
               </Box>
               <Box sx={{ width: '100%', mt: 2 }}>
