@@ -22,3 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Env files (ajoute cette ligne pour protéger tes clés)
+.env
+.env.local
+.env.development
+.env.production
+
+# Firebase config (optionnel, si tu veux éviter de commit le fichier)
+src/firebase.js
