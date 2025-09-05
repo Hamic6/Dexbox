@@ -58,7 +58,7 @@ export default function Sidebar() {
             src={DexboxLogo}
             alt="Logo Dexbox"
             title="Dexbox Technologies"
-            style={{ width: 71, height: 71, marginBottom: 4 }}
+            style={{ width: 142, height: 142, marginBottom: 8 }} // Taille doublée et margin ajusté
           />
           <Typography
             variant="caption"
