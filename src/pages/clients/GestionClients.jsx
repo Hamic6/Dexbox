@@ -33,51 +33,14 @@ import { useNavigate } from 'react-router-dom';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 
-// Mock clients avec statut actif/inactif
-const mockClients = [
-  {
-    id: 1,
-    civilite: 'Mme',
-    code: 'C001',
-    prenom: 'Sophie',
-    nom: 'Bernard',
-    name: 'Sophie Bernard',
-    email: 'sophie@client.com',
-    phone: '06 12 34 56 78',
-    avatar: '',
-    actif: true,
-    // autres champs mockés si besoin
-  },
-  {
-    id: 2,
-    civilite: 'M.',
-    code: 'C002',
-    prenom: 'Marc',
-    nom: 'Dubois',
-    name: 'Marc Dubois',
-    email: 'marc@client.com',
-    phone: '06 98 76 54 32',
-    avatar: '',
-    actif: false,
-  },
-  {
-    id: 3,
-    civilite: 'Mme',
-    code: 'C003',
-    prenom: 'Julie',
-    nom: 'Martin',
-    name: 'Julie Martin',
-    email: 'julie@client.com',
-    phone: '07 11 22 33 44',
-    avatar: '',
-    actif: true,
-  },
-];
+// Ajoute ces imports pour Firestore
+import { db } from '../../firebase';
+import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
 
 export default function GestionClients() {
   const theme = useTheme();
   const navigate = useNavigate();
-  const [clients, setClients] = useState(mockClients);
+  const [clients, setClients] = useState([]);
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedClient, setSelectedClient] = useState(null);
@@ -98,9 +61,23 @@ export default function GestionClients() {
 
   const isDark = theme.palette.mode === 'dark';
 
+  // Récupère les clients depuis Firestore
+  useEffect(() => {
+    async function fetchClients() {
+      const querySnapshot = await getDocs(collection(db, "clients"));
+      const clientsData = querySnapshot.docs.map(docSnap => ({
+        id: docSnap.id,
+        ...docSnap.data(),
+        name: docSnap.data().name || `${docSnap.data().prenom || ''} ${docSnap.data().nom || ''}`,
+      }));
+      setClients(clientsData);
+    }
+    fetchClients();
+  }, []);
+
   // Filtrage des clients selon la recherche
   const filteredClients = clients.filter(c =>
-    (c.name || `${c.prenom} ${c.nom}` || '').toLowerCase().includes(search.toLowerCase()) ||
+    (c.name || '').toLowerCase().includes(search.toLowerCase()) ||
     (c.email || '').toLowerCase().includes(search.toLowerCase()) ||
     (c.phone || '').toLowerCase().includes(search.toLowerCase())
   );
@@ -133,20 +110,30 @@ export default function GestionClients() {
     setAnchorEl(null);
   };
 
-  // Confirm activation/désactivation
-  const handleConfirmToggle = () => {
-    setClients(clients.map(c =>
-      c.id === selectedClient.id ? { ...c, actif: !c.actif } : c
-    ));
-    setSnackbarMsg(
-      selectedClient.actif
-        ? 'Client désactivé avec succès.'
-        : 'Client activé avec succès.'
-    );
-    setSnackbarSeverity('success');
-    setSnackbarOpen(true);
-    setConfirmOpen(false);
-    setSelectedClient(null);
+  // Confirm activation/désactivation (MAJ Firestore)
+  const handleConfirmToggle = async () => {
+    if (selectedClient) {
+      try {
+        await updateDoc(doc(db, "clients", selectedClient.id), {
+          actif: !selectedClient.actif,
+        });
+        setClients(clients.map(c =>
+          c.id === selectedClient.id ? { ...c, actif: !c.actif } : c
+        ));
+        setSnackbarMsg(
+          selectedClient.actif
+            ? 'Client désactivé avec succès.'
+            : 'Client activé avec succès.'
+        );
+        setSnackbarSeverity('success');
+      } catch (err) {
+        setSnackbarMsg("Erreur lors de la mise à jour du statut.");
+        setSnackbarSeverity('error');
+      }
+      setSnackbarOpen(true);
+      setConfirmOpen(false);
+      setSelectedClient(null);
+    }
   };
 
   const handleCancelToggle = () => {
@@ -306,7 +293,7 @@ export default function GestionClients() {
                 }}
               >
                 <Avatar
-                  src={client.avatar}
+                  src={client.profilePhoto || client.avatar}
                   sx={{
                     width: 64,
                     height: 64,

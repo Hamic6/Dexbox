@@ -135,26 +135,42 @@ export default function AddClient({ mode = 'add', client, onSave }) {
     setVoyageurs(value);
   };
 
+  // Nettoie l'objet pour Firestore : objets vides => null, tableaux vides => []
+  function cleanForFirestore(obj) {
+    if (Array.isArray(obj)) return obj; // On garde les tableaux vides
+    if (obj && typeof obj === 'object') {
+      const keys = Object.keys(obj);
+      if (keys.length === 0) return null;
+      const cleaned = {};
+      for (const key of keys) {
+        if (typeof obj[key] === 'object' && obj[key] !== null) {
+          cleaned[key] = cleanForFirestore(obj[key]);
+        } else {
+          cleaned[key] = obj[key] === '' ? null : obj[key];
+        }
+      }
+      // Si tous les champs sont null, on retourne null
+      if (Object.values(cleaned).every(v => v === null)) return null;
+      return cleaned;
+    }
+    return obj === '' ? null : obj;
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const dataToSave = {
+        ...cleanForFirestore(form),
+        profilePhoto,
+        voyageurs,
+        remises,
+        [mode === 'add' ? 'createdAt' : 'updatedAt']: new Date()
+      };
       if (mode === 'add') {
-        await addDoc(collection(db, "clients"), {
-          ...form,
-          profilePhoto,
-          voyageurs,
-          remises,
-          createdAt: new Date()
-        });
+        await addDoc(collection(db, "clients"), dataToSave);
         setSnackbarMsg('Client enregistré avec succès sur Google Cloud !');
       } else if (mode === 'edit' && client && client.id) {
-        await updateDoc(doc(db, "clients", client.id), {
-          ...form,
-          profilePhoto,
-          voyageurs,
-          remises,
-          updatedAt: new Date()
-        });
+        await updateDoc(doc(db, "clients", client.id), dataToSave);
         setSnackbarMsg('Client modifié avec succès !');
       }
       setOpenSnackbar(true);
