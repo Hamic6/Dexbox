@@ -11,18 +11,19 @@ import Box from '@mui/material/Box';
 import { useState, useEffect } from 'react';
 import SplashScreen from './components/SplashScreen';
 import AvatarMenu from './components/AvatarMenu';
-import Users from './pages/Users'; // Ajoute cet import
+import Users from './pages/Users';
 import Clients from './pages/clients/GestionClients';
-import HomeClients from './pages/clients/homeclients'; // Ajoute cet import
+import HomeClients from './pages/clients/homeclients';
 import Search from './pages/Search';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Terms from './pages/Terms';
 import Support from './pages/Support';
-import Sales from './pages/Sales'; // Crée la page si elle n'existe pas
+import Sales from './pages/Sales';
 import AddClient from './pages/clients/add';
 import GestionDesVoyageurs from './pages/clients/gestiondesvoyageurs';
 import Espaceclient from './pages/Espaceclient';
+import BackButton from './components/BackButton';
 
 function AppContent() {
   const location = useLocation();
@@ -30,6 +31,8 @@ function AppContent() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      {/* Bouton retour global */}
+      {!isLoginPage && <BackButton />}
       {/* Barre du haut avec AvatarMenu */}
       {!isLoginPage && (
         <Box
@@ -60,9 +63,9 @@ function AppContent() {
             <Route path="/home" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/reservations" element={<Reservations />} />
-            <Route path="/users" element={<Users />} /> {/* Ajoute cette ligne */}
-            <Route path="/clients" element={<Clients />} /> {/* Sidebar */}
-            <Route path="/clients/home" element={<HomeClients />} /> {/* Page d'accueil */}
+            <Route path="/users" element={<Users />} />
+            <Route path="/clients" element={<Clients />} />
+            <Route path="/clients/home" element={<HomeClients />} />
             <Route path="/clients/add" element={<AddClient />} />
             <Route path="/search" element={<Search />} />
             <Route path="/profile" element={<Profile />} />
