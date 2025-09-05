@@ -11,8 +11,8 @@ export default function BackButton() {
         onClick={() => navigate(-1)}
         sx={{
           position: 'fixed',
-          bottom: 24,
-          left: { xs: 24, md: 260 }, // 24px sur mobile, 260px sur desktop (largeur sidebar)
+          bottom: { xs: 64, md: 24 }, // <-- 64px sur mobile, 24px sur desktop
+          left: { xs: 24, md: 260 },
           zIndex: 2000,
           bgcolor: 'background.paper',
           boxShadow: 2,
