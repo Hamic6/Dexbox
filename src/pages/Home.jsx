@@ -8,41 +8,31 @@ import { useNavigate } from 'react-router-dom';
 
 const modules = [
   {
-    title: 'Clients',
-    description:
-      "Profils Clients, Profils Voyageurs, Bookings, Dossiers, Devis, Factures, Notes de Crédit, Règlements, Remboursements, Relevé Client.",
+    label: 'Clients',
     icon: <GroupsIcon sx={{ fontSize: 28 }} />,
     color: 'success.main',
     link: '/clients/home', // <-- change ici pour pointer vers homeclients.jsx
   },
   {
-    title: 'Fournisseurs',
-    description:
-      "Profils Fournisseurs, Profils Compagnies, Produits, Règlements au Fournisseur, Rapprochement BSP, Relevé Fournisseur.",
+    label: 'Fournisseurs',
     icon: <BusinessCenterIcon sx={{ fontSize: 28 }} />,
     color: 'warning.main',
     link: '/pricing',
   },
   {
-    title: 'Agents',
-    description:
-      "Profils Agents/Démarcheurs, Règlements à l'Agent, Relevé Agent.",
+    label: 'Agents',
     icon: <ManageAccountsIcon sx={{ fontSize: 28 }} />,
     color: 'info.main',
     link: '/users',
   },
   {
-    title: 'Cash Manager',
-    description:
-      "Ouvrir/Fermer une Caisse, Consulter le Solde, Transactions Cash, Chèque, Virement, Carte de Crédit, Remises Chèque.",
+    label: 'Cash Manager',
     icon: <AccountBalanceWalletIcon sx={{ fontSize: 28 }} />,
     color: 'secondary.main',
     link: '/cash',
   },
   {
-    title: 'Comptabilité et Reporting',
-    description:
-      "Plan Comptable, Journaux, Modèles d'Ecriture, Passerelles Comptables. Ventes, Clients, Fournisseurs, Agents, Caisse, Banque, Liste, Custom Reports.",
+    label: 'Comptabilité et Reporting',
     icon: <BarChartIcon sx={{ fontSize: 28 }} />,
     color: 'error.main',
     link: '/reporting',
@@ -65,44 +55,63 @@ export default function Home() {
       >
         Menu principal
       </Typography>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} justifyContent="center" alignItems="flex-start">
         {modules.map((mod, idx) => (
-          <Grid item xs={12} sm={6} md={4} key={mod.title}>
+          <Grid
+            item
+            xs={6}
+            sm={4}
+            md={3}
+            lg={2}
+            key={mod.label}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
             <Card
               elevation={4}
               sx={{
-                width: { xs: '90%', sm: 216, md: 216 },
-                mx: 'auto',
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                p: 2,
-                bgcolor: 'background.paper',
-                borderRadius: 3,
-                transition: 'transform 0.3s, box-shadow 0.3s, opacity 0.6s',
-                opacity: 0.95,
                 cursor: 'pointer',
+                width: 110,
+                height: 110,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'transform 0.2s, box-shadow 0.2s',
                 '&:hover': {
-                  transform: 'translateY(-8px) scale(1.04)',
+                  transform: 'scale(1.08)',
                   boxShadow: 6,
-                  opacity: 1,
-                  bgcolor: mod.color,
+                  bgcolor: 'primary.light',
                   color: '#fff',
                 },
               }}
               onClick={() => navigate(mod.link)}
             >
-              <Avatar sx={{ bgcolor: mod.color, mb: 2, width: 48, height: 48 }}>
+              <Avatar
+                sx={{
+                  bgcolor: mod.color,
+                  width: 48,
+                  height: 48,
+                  boxShadow: 2,
+                }}
+              >
                 {mod.icon}
               </Avatar>
-              <Typography variant="h6" sx={{ fontWeight: 600, mb: 1, textAlign: 'center', fontSize: '1rem' }}>
-                {mod.title}
-              </Typography>
-              <Typography variant="body2" sx={{ textAlign: 'center', color: 'text.secondary', fontSize: '0.85rem' }}>
-                {mod.description}
-              </Typography>
             </Card>
+            <Typography
+              variant="body1"
+              sx={{
+                fontWeight: 600,
+                textAlign: 'center',
+                fontSize: { xs: 14, sm: 15 },
+                mt: 1,
+                maxWidth: 120,
+              }}
+            >
+              {mod.label}
+            </Typography>
           </Grid>
         ))}
       </Grid>

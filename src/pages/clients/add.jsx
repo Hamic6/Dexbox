@@ -20,6 +20,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import AddClientMobile from './AddClientMobile';
+import { remisesOptions } from '../../mocks/mockRemises';
 
 // Mock options pour la sélection
 const agencesOptions = [
@@ -36,11 +37,6 @@ const departementsOptions = [
   { label: 'Commercial', id: 1 },
   { label: 'Marketing', id: 2 },
   { label: 'Finance', id: 3 },
-];
-const remisesOptions = [
-  { label: 'Remise 10%', id: 1 },
-  { label: 'Remise 20%', id: 2 },
-  { label: 'Remise fidélité', id: 3 },
 ];
 
 export default function AddClient({ mode = 'add', client, onSave }) {
@@ -82,6 +78,7 @@ export default function AddClient({ mode = 'add', client, onSave }) {
     notes: '',
   });
   const [voyageurs, setVoyageurs] = useState([]);
+  const [remises, setRemises] = useState([]);
   const isMobile = useMediaQuery('(max-width:600px)');
 
   // Pré-remplissage si mode edit
@@ -347,13 +344,23 @@ export default function AddClient({ mode = 'add', client, onSave }) {
                   multiple
                   options={remisesOptions}
                   getOptionLabel={option => option.label}
-                  value={form.remises}
-                  onChange={(e, value) => setForm(f => ({ ...f, remises: value }))}
+                  value={remises}
+                  onChange={(e, value) => setRemises(value)}
                   renderInput={params => (
                     <TextField {...params} label="Sélectionner les remises" placeholder="Remises" />
                   )}
                   isOptionEqualToValue={(option, value) => option.id === value.id}
                 />
+                {remises.length > 0 && (
+                  <Box sx={{ mt: 1 }}>
+                    {remises.map(remise => (
+                      <Typography key={remise.id} variant="body2" color="text.secondary">
+                        {remise.label} — {remise.type === 'pourcentage' ? `${remise.valeur}%` : `${remise.valeur}€`} — {remise.cible}
+                        {remise.conditions && ` — ${remise.conditions}`}
+                      </Typography>
+                    ))}
+                  </Box>
+                )}
               </Grid>
             </Grid>
           )}

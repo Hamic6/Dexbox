@@ -132,8 +132,8 @@ export default function Login() {
                 src={DexboxLogo}
                 alt="Dexbox Logo"
                 sx={{
-                  width: 64,
-                  height: 64,
+                  width: 120,
+                  height: 120,
                   mb: 1,
                   bgcolor: 'transparent',
                 }}

@@ -24,6 +24,11 @@ import AddClient from './pages/clients/add';
 import GestionDesVoyageurs from './pages/clients/gestiondesvoyageurs';
 import Espaceclient from './pages/Espaceclient';
 import BackButton from './components/BackButton';
+import ReleveClient from './pages/clients/ReleveClient';
+import AddVoyageur from './pages/clients/addVoyageur'; // Ajoute cet import
+import GestionAgences from './pages/clients/GestionAgences'; // Ajoute cet import
+import GestionDepartements from './pages/clients/GestionDepartements';
+import GestionRemises from './pages/clients/GestionRemises'; // Ajoute cet import
 
 function AppContent() {
   const location = useLocation();
@@ -67,6 +72,11 @@ function AppContent() {
             <Route path="/clients" element={<Clients />} />
             <Route path="/clients/home" element={<HomeClients />} />
             <Route path="/clients/add" element={<AddClient />} />
+            <Route path="/clients/releve" element={<ReleveClient />} />
+            <Route path="/clients/addvoyageur" element={<AddVoyageur />} /> {/* Ajoute cette ligne */}
+            <Route path="/clients/agences" element={<GestionAgences />} /> {/* Ajoute cette ligne */}
+            <Route path="/departements" element={<GestionDepartements />} />
+            <Route path="/remises" element={<GestionRemises />} /> {/* Ajoute cette ligne */}
             <Route path="/search" element={<Search />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/settings" element={<Settings />} />

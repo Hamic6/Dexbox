@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Grid, Card, Avatar } from '@mui/material';
+import { Box, Typography, Grid, Card, Avatar, Button, CardContent } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import GroupsIcon from '@mui/icons-material/Groups';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
@@ -7,7 +7,9 @@ import BusinessIcon from '@mui/icons-material/Business';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import DiscountIcon from '@mui/icons-material/Discount';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import { useNavigate } from 'react-router-dom';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong'; // Ajoute cet import
+import CampaignIcon from '@mui/icons-material/Campaign'; // Ajoute cet import
+import { useNavigate, Link } from 'react-router-dom';
 
 const cards = [
   {
@@ -32,7 +34,7 @@ const cards = [
     label: 'Agences',
     icon: <BusinessIcon sx={{ fontSize: 28 }} />,
     color: 'warning.main',
-    to: '/agences',
+    to: '/clients/agences',
   },
   {
     label: 'Départements',
@@ -45,6 +47,18 @@ const cards = [
     icon: <DiscountIcon sx={{ fontSize: 28 }} />,
     color: 'error.main',
     to: '/remises',
+  },
+  {
+    label: 'Relevé Client',
+    icon: <ReceiptLongIcon sx={{ fontSize: 28 }} />,
+    color: 'info.main',
+    to: '/clients/releve',
+  },
+  {
+    label: 'Marketing',
+    icon: <CampaignIcon sx={{ fontSize: 28 }} />,
+    color: 'success.main',
+    to: '/clients/marketing',
   },
 ];
 
